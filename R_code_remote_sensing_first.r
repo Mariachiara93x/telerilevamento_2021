@@ -23,4 +23,3 @@ cl <- colorRampPalette(c("pink", "light blue", "dark green", "purple", "orange",
 plot(p224r63_2011, col=cl)
 
 
-
