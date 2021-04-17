@@ -9,6 +9,7 @@ library(ncdf4)
 
 setwd("C:/lab/") 
 
+#seleziono l'immagine in formato .nc per visualizzare le informazioni a riguardo
 criosfera <- raster ("c_gls_SCE500_202104150000_CEURO_MODIS_V1.0.1.nc")
 
 cl <- colorRampPalette(c("light blue", "red", "green", "orange")) (200)
