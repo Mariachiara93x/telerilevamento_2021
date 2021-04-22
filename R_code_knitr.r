@@ -15,4 +15,5 @@ library(knitr)
 #inserisco come argomento per stitch il nome del file "R_code_greenland.txt"
 #con tutta questa operazione salverò nella cartella lab il report generato
 stitch("R_code_greenland.r.txt", template=system.file("misc", "knitr-template.Rnw", package="knitr"))
-
+#in automatico si genera una cartella di nome figure
+#dentro figure sono presenti tutte le immagini del codice
