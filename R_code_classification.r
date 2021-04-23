@@ -65,3 +65,6 @@ gcc2 <- unsuperClass(gc, nClasses=2)
 gcc2
 plot (gcc2$map)
 
+gcc4 <- unsuperClass(gc, nClasses=4)
+plot(gcc4$map)
+
