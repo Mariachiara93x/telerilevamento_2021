@@ -18,4 +18,7 @@ stitch("R_code_greenland.r.txt", template=system.file("misc", "knitr-template.Rn
 #in automatico si genera una cartella di nome figure
 #dentro figure sono presenti tutte le immagini del codice
 
+#se la cartella non si genera in automatico, scarico direttamente la cartella di "R_code_time_series.r" 
+#inserisco il file nella cartella lab
+#e ora applico funzione stitch
 stitch("R_code_time_series.r", template=system.file("misc", "knitr-template.Rnw", package="knitr"))
