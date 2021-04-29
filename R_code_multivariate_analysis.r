@@ -1,4 +1,7 @@
 #R_code_multivariate_analysis.r
+#utilizzo l'ANALISI MULTIVARIATA nel caso in cui ho tante bande a disposizione, ma un'informazione molto correlata (all'aumentare di riflettanza di banda x aumenta anche quella di banda y)
+#compatto dati per vedere tutti il sistema insieme in poche bande
+#riesco a compattare perché in pratica scelgo di utilizzare una banda che spieghi una quantità maggiore di variabilità
 
 library(raster)
 library(RStoolbox)
