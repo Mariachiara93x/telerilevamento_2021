@@ -34,7 +34,7 @@ soc <- unsuperClass(so,nClasses=3)
 
 #unsuperClass crea la mappa dell'immagine soc
 #plotto la mappa dell'immagine soc con plot
-#lego la mappa all'immagine 
+#lego la mappa all'immagine con $
 plot(soc$map)
 #vedo le classi da 1 a 3 (con classi intermedie:1,5, ecc)
 
@@ -52,19 +52,35 @@ sunc <- unsuperClass(sun, nClasses=3)
 plot(sunc$map)
 
 #GRAND CANYON
+#https://landsat.visibleearth.nasa.gov/view.php?id=80948
+#in questa immagine rilevata dal satellite Landsat in data 30 Marzo 2013, si osserva una porzione del Grand Canyon
+#"In the image above, the Colorado River traces a line across the arid Colorado Plateau. 
+#Treeless areas are beige and orange; green areas are forested. 
+#The river water is brown and muddy, a common occurrence in spring when melting snows cause water levels to swell and pick up extra sediment. 
+#The black line that follows the river in the upper right side of the image is comprised of shadows." by NASA Landsat Image Gallery
 
 library(raster)
-library(RStoolbox)
+library(RStoolbox)#necessario per analisi multivariata
 setwd("C:/lab/") 
 
+#scarico l'immagine e la salvo nella cartella lab
+#associo l'immagine all'oggetto gc e utilizzo la funzione brick
 gc <- brick("dolansprings_oli_2013088_canyon_lrg.jpg")
+#utilizzo la funzione RGB per plottare un oggetto Raster multi strato
+#uso lo stretch, lineare e poi hist, per aumentare rispettivamente la potenza visiva di tutti i colori
 plotRGB(gc, r=1, g=2, b=3, stretch="lin")
 plotRGB(gc, r=1, g=2, b=3, stretch="hist")
 
+#uso la funzione unsuperClass e scelgo 2 classi di riferimento
+#la associo all'oggetto gcc2
 gcc2 <- unsuperClass(gc, nClasses=2)
+#visualizzo le informazioni riguardo all'immagine
 gcc2
+#plotto la mappa dell'immagine gcc2 con plot
+#lego la mappa all'immagine con $
 plot (gcc2$map)
 
+#aumento il numero di classi e plotto
 gcc4 <- unsuperClass(gc, nClasses=4)
 plot(gcc4$map)
 
