@@ -59,10 +59,19 @@ plotRGB(p224r63_2011res,r=4,g=3,b=2, stretch="lin")
 #questo dataset contiene al suo interno il modello, la mappa, ecc
 #prende pacchetto di dati e lo compatta in un numero minore di bande
 p224r63_2011res_pca<-rasterPCA(p224r63_2011res)
-#applico la funzione summary per ottenere un sommario del modello
-#con la prima componente viene spiegato lo 0,998% della variabilità
-#con le prime tre bande viene spiegato lo 0,999% della variabilità
+#applico la funzione SUMMARY per ottenere un sommario del modello
+#con la prima componente viene spiegato lo 99,98% della variabilità
+#con le prime tre bande viene spiegato lo 99,99% della variabilità
 summary(p224r63_2011res_pca$model)
 #plottando la mappa osservo infatti che nella PC1 ho tante informazioni
 #nella PC7 c'è molto rumore
 plot(p224r63_2011res_pca$map)
+#visualizzo le informazioni riguardo all'immagine
+p224r63_2011res_pca
+
+#plotto la mappa risultante dal modello
+#i tre colori sono relativi alle tre componenti
+plotRGB(p224r63_2011res_pca$map, r=1, g=2, b=3, stretch="lin")
+
+
+
