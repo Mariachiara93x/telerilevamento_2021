@@ -31,3 +31,38 @@ plot(p224r63_2011$B1_sre, p224r63_2011$B2_sre, col="red", pch=18, cex=2)
 #è presente indice di correlazion che varia tra -1 e 1
 #se c'è correlazione positiva va a 1, al contrario a -1
 pairs(p224r63_2011)
+
+#28/04
+library(raster)
+library(RStoolbox)
+
+setwd("C:/lab/")
+p224r63_2011<- brick("p224r63_2011_masked.grd")
+p224r63_2011
+pairs(p224r63_2011)
+
+#AGGREGATE CELLS
+#utilizzo la funzione AGGREGATE per diminuire la risoluzione dell'immagine, aumentando la dimensione del pixel
+#questo processo si chiama resampling
+#quindi associo la funzione aggregate con fattore 10 all'oggetto sotto indicato
+p224r63_2011res<-aggregate(p224r63_2011, fact=10)
+#da risoluzione iniziale di 30x30m, riduco a 300x300m
+p224r63_2011res
+
+#applico par per vedere le due immagini insieme
+#la prima avrà una risoluzione più alta della seconda
+par(mfrow=c(2,1))
+plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
+plotRGB(p224r63_2011res,r=4,g=3,b=2, stretch="lin")
+
+#faccio la PCA del dataset p224r63_2011res
+#questo dataset contiene al suo interno il modello, la mappa, ecc
+#prende pacchetto di dati e lo compatta in un numero minore di bande
+p224r63_2011res_pca<-rasterPCA(p224r63_2011res)
+#applico la funzione summary per ottenere un sommario del modello
+#con la prima componente viene spiegato lo 0,998% della variabilità
+#con le prime tre bande viene spiegato lo 0,999% della variabilità
+summary(p224r63_2011res_pca$model)
+#plottando la mappa osservo infatti che nella PC1 ho tante informazioni
+#nella PC7 c'è molto rumore
+plot(p224r63_2011res_pca$map)
