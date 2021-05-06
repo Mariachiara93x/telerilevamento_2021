@@ -62,3 +62,26 @@ plot (vi2, col=cl)
 difndvi <- ndvi1 -ndvi2
 plot(difndvi)
 
+#5 MAGGIO
+#il pacchetto rasterdiv contiene un dataset globale derivato da Copernicus 
+#nel dataset globale è presente una media di valori di NDVI dal 1999 al 2017 
+#in pratica osservo quanta biomassa è presente sulla Terra
+install.packages("rasterdiv")
+library(rasterdiv)
+
+#worldwide NDVI
+#plottando copNDVI ottengo una mappa globale in cui è visibile l'acqua
+plot(copNDVI)
+
+# per eliminare l'acqua utilizzo l'argomento cbind della funzione reclassify
+#in pratica i pixel 253,254,255 possono essere trasformati in NA (= not assigned = "non valori")
+#il : serve a dare il range di valori dei pixel
+copNDVI<-reclassify(copNDVI, cbind (253:255,NA))
+plot(copNDVI)
+#noto in nord america e nord europa un NDVI più alto
+
+#richiamo la libreria rasterVis per fare un levelplot dell'immagine precedentemente plottata
+library(rasterVis)
+levelplot(copNDVI)
+#osservo la variazione di NDVI dal '99 al 2017 
+#i valori massimi si trovano all'equatore perché c'è il massimo di luce
