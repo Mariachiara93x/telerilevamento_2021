@@ -3,6 +3,10 @@
 #osservo la variabilità spaziale
 library(raster)
 library(RStoolbox)
+library(ggplot2)
+library(gridExtra) # per plottare ggplot insieme
+install.packages("viridis")
+library(viridis) # per colorare i plot di ggplot in modo automatico
 
 setwd("C:/lab/")
 
@@ -56,3 +60,29 @@ sentpca
 summary(sentpca$model)
 #the first PC contains 67.36804% of the original information
 
+pc1 <- sentpca$map$PC1
+
+pc1sd5 <- focal(pc1, w=matrix,(1/25, nrow=5, ncol=5), fun=sd)
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+plot(pc1sd5, col=clsd)
+
+source("source_test_lezione.r")
+
+source("source_ggplot.r")
+
+ggplot() +
+p1<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) +
+scale_fill_viridis()
+ggtitle("Standard deviation of PC1 by viridis colour scale")
+
+ggplot() +
+p2<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) +
+scale_fill_viridis(option= "magma")
+ggtitle("Standard deviation of PC1 by magma colour scale")
+
+ggplot() +
+p3<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) +
+scale_fill_viridis(option= "turbo") +
+ggtitle("Standard deviation of PC1 by turbo colour scale")
+
+grid.arrange(p1,p2,p3, nrow=2)
