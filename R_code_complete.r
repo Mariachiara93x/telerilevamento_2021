@@ -228,6 +228,7 @@ import <- lapply(rlist,raster)
 import
 TGr <- stack(import)
 TGr
+
 #la funzione levelplot permette di utilizzare un blocco intero di file, con una singola legenda e plottarli tutti insieme 
 #applico la funzione levelplot all'immagine "TGr"
 levelplot(TGr)
