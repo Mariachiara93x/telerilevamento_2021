@@ -160,11 +160,8 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
 
 library(raster)
 
-setwd("C:/lab/greenland") # Windows
+setwd("C:/lab/greenland") 
 
-
-library(raster)
-setwd("C:/lab/greenland")
 # cartella greenland con 4 file,4 strati separati
 # i file .tif rappresentano la stima della temperatura LST (land surface temperature)
 
@@ -182,7 +179,8 @@ plot(lst_2000)
 plot(lst_2005)
 plot(lst_2010)
 plot(lst_2015)
-#list f files
+
+#LIST FILES
 # list.files crea la lista di file che R utilizzerà per la funzione lapply
 
 # serve un pattern, cioè una configurazione comune a tutti i file, per caricare la lista di tutti questi: in questo caso utilizzo il pattern "lst"
