@@ -21,7 +21,7 @@ chad4
 plot(chad4)
 
 #plotto con RGB un par delle 4 immagini
-#osservo la riduzione del contenuto d'acqua all'interno del lago e contemporaneamente la variazione di vegetazione nel tempo
+#osservo nel tempo una generale riduzione del contenuto d'acqua all'interno del lago e contemporaneamente un aumento della vegetazione 
 #b1=NIR, b2=rosso, b3=verde
 par(mfrow=c(2,2))
 plotRGB(chad1, r=1, g=2, b=3, stretch="lin")
