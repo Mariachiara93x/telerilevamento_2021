@@ -895,11 +895,8 @@ plot(PC1sd, col=cl)
 #osservo che la stadard deviation aumenta dove c'è la linea di separazione tra un Paese e l'altro
 
 
-
-
-
-
 #..............................................
+
 
 #12. R code spectral signatures
 
