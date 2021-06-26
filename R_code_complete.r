@@ -157,22 +157,17 @@ plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
 #Greenland increase of temperature
 #Data and code from Emanuela Cosma
 
-install.packages ("raster")
 library(raster)
 
 setwd("C:/lab/greenland") # Windows
 
-
- 
-
-#day 2
 
 library(raster)
 setwd("C:/lab/greenland")
 # cartella greenland con 4 file,4 strati separati
 # i file .tif rappresentano la stima della temperatura LST (land surface temperature)
 
-# LST da Copernicus (Global Land Service)
+#LST da Copernicus (Global Land Service)
 #la funzione brick non può essere utilizzata perchè i 4 file sono 4 file separati
 
 # raster crea un rasterlayer
@@ -831,7 +826,7 @@ defor2 <- brick("defor2.jpg")
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 plotRGB(defor2, r=1, g=2, b=3, stretch="hist") # differenze dei colori più accentuate con hist, perché uso curva logistica anziché linea
 
-#gdal è la libreria generale per dati geospaziali sia raster che vettoriali
+#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali
 library(rgdal)
 
 # utilizzo la funzione click per cliccare su una mappa e ottenere informazioni relative a quel punto
