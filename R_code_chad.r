@@ -4,6 +4,7 @@ library(raster)
 
 setwd("C:/lab/CH")
 
+
 chad1 <- brick("chad1973.jpg")
 chad1
 plot(chad1)
@@ -16,25 +17,88 @@ chad3 <- brick("chad1997.jpg")
 chad3
 plot(chad3)
 
+chad4 <- brick("chad2001.jpg")
+chad4
+plot(chad4)
+
+####ESPERIMENTO
+
+chad1 <- brick("chad1973.jpg")
+chad1
+plot(chad1)
+
+chad2 <- brick("chad_1987.jpg")
+chad2
+plot(chad2)
+
+chad3 <- brick("chad2001.jpg")
+chad3
+plot(chad3)
+plotRGB(chad3, r=2, g=4, b=3, stretch="lin")
+#prova con colorramp a cambiare i colori di chad2001
+
+
 chad4 <- brick("chad2017.jpg")
 chad4
 plot(chad4)
 
+
+
+#DIffERENCE VEGETATION INDEX
+#osservo in che stato di salute è la vegetazione
+#noto che la vegetazione (foresta amazzonica) è molto verde
+dvi1 <- chad1$chad1973.1 - chad1$chad1973.2
+plot(dvi1)
+
+dvi2 <- chad2$chad_1987.1 - chad2$chad_1987.2
+plot(dvi2)
+
+dvi3 <- chad3$chad2017.1 - chad3$chad2017.2
+plot(dvi3)
+
+####################
+
 #plotto con RGB un par delle 4 immagini
 #osservo nel tempo una generale riduzione del contenuto d'acqua all'interno del lago e contemporaneamente un aumento della vegetazione 
-#b1=NIR, b2=rosso, b3=verde
+#il colore rosso nelle immagini rappresenta la vegetazione, il grigio-azzurro l'acqua
 par(mfrow=c(2,2))
 plotRGB(chad1, r=1, g=2, b=3, stretch="lin")
 plotRGB(chad2, r=1, g=2, b=3, stretch="lin")
 plotRGB(chad3, r=1, g=2, b=3, stretch="lin")
-plotRGB(chad4, r=1, g=2, b=3, stretch="lin")
+plotRGB(chad4, r=2, g=4, b=3, stretch="lin")
+plotRGB(chad5, r=1, g=2, b=3, stretch="lin")
 
-#DIffERENCE VEGETATION INDEX ???
+#R_code_land_cover.r
+library(RStoolbox) #per unsuperclass
+
+ch04<- plotRGB(chad4, r=2, g=4, b=3, stretch="lin")
+
+par(mfrow=c(2,2))
+ch1c <-unsuperClass(chad1, nClasses=5) 
+plot(ch1c$map)
+ch2c <-unsuperClass(chad2, nClasses=5) 
+plot(ch2c$map)
+ch3c <-unsuperClass(chad3, nClasses=5) 
+plot(ch3c$map)
+ch4c <-unsuperClass(chad4, nClasses=5) 
+plot(ch4c$map)
+set.seed(4)
+
+#osservo in particolare le differenze tra l'immagine del 1973 e quella del 2001
+par(mfrow=c(2,1))
+ch1c <-unsuperClass(chad1, nClasses=5) 
+plot(ch1c$map)
+ch4c <-unsuperClass(chad4, nClasses=5) 
+plot(ch4c$map)
+
+#DIffERENCE VEGETATION INDEX
 #osservo in che stato di salute è la vegetazione
-#noto che la vegetazione è molto verde
-dvi1 <- defor1$defor1.1 - defor1$defor1.2
+#noto che la vegetazione (foresta amazzonica) è molto verde
+dvi1 <- chad1$chad1973.1 - chad1$chad1973.2
 plot(dvi1)
 
+dvi2 <- chad2$chad1987.1 - chad2$chad1987.2
+plot(dvi2)
 
 #tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
 #tramite la funzione lapply applico un'altra funzione (raster) alla lista di file
