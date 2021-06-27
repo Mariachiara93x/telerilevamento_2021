@@ -111,27 +111,27 @@ plot(p224r63_2011$B4_sre, col=clnir)
 # B7: infrarosso medio
 
 #Utilizzo schema RGB con il quale visualizzo tre bande alla volta -> spiega stretch
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="lin")
 
 # Exercise: mount a 2x2 multiframe: tramite la funzione par visualizzo contemporaneamente, scegliendo l'opzione 2 row 2 colums, le quattro immagini precedentemente plottate con RGB
 pdf("il_mio_primo_pdf_con_r.pdf") #salvare plot come pdf
 par(mfrow=c(2,2))
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="lin")
 dev.off()
 
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist") #visualizzo 
 
 #par natural colours, false colours and false colours with histogram stretching
 par(mfrow=c(3,1))
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist")
 
 #Multitemporal set
@@ -139,14 +139,14 @@ p224r63_1988 <- brick("p224r63_1988_masked.grd")
 p224r63_1988
 
 plot(p224r63_1988)
-plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="Lin")
+plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="lin")
 
 #hist
-plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
 pdf("multitemp.pdf")
 par(mfrow=c(2,2))
-plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="hist")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="hist")
 
