@@ -87,7 +87,7 @@ plot(ndvi3, col=cl, main="NDVI in 2017")
 #per immagine 2017 osserv0: valori NDVI vicini a -1 (rimanenza lago a SE); il resto del lago riporta valori tra 0.5 e 1 (aumenta superfice vegetativa)
 ####################
 
-plot(ndvi1, ndvi3, col="red", pch=18, cex=2)###devono avere stessa dimensione
+plot(ndvi1, ndvi3, col="red", pch=18, cex=2)#non va, perché???
 
 
 #PCA
@@ -102,10 +102,10 @@ library(rasterVis)#necessaria per levelplot
 
 rlist<- list.files(pattern="chad")
 rlist
-import<- lapply(rlist,raster)
+import<- lapply(rlist,brick)
 import
 ch <- stack(import)
-levelplot(ch) ###devono avere stessa dimensione
+levelplot(ch) 
 
 
 
