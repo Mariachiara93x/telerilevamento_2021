@@ -87,52 +87,25 @@ plot(ndvi3, col=cl, main="NDVI in 2017")
 #per immagine 2017 osserv0: valori NDVI vicini a -1 (rimanenza lago a SE); il resto del lago riporta valori tra 0.5 e 1 (aumenta superfice vegetativa)
 ####################
 
+plot(ndvi1, ndvi3, col="red", pch=18, cex=2)###devono avere stessa dimensione
 
 
-
-#R_code_land_cover.r
-library(RStoolbox) #per unsuperclass
-
-ch04<- plotRGB(chad4, r=2, g=4, b=3, stretch="lin")
-
-par(mfrow=c(2,2))
-ch1c <-unsuperClass(chad1, nClasses=5) 
-plot(ch1c$map)
-ch2c <-unsuperClass(chad2, nClasses=5) 
-plot(ch2c$map)
-ch3c <-unsuperClass(chad3, nClasses=5) 
-plot(ch3c$map)
-ch4c <-unsuperClass(chad4, nClasses=5) 
-plot(ch4c$map)
-set.seed(4)
-
-#osservo in particolare le differenze tra l'immagine del 1973 e quella del 2001
-par(mfrow=c(2,1))
-ch1c <-unsuperClass(chad1, nClasses=5) 
-plot(ch1c$map)
-ch4c <-unsuperClass(chad4, nClasses=5) 
-plot(ch4c$map)
-
-#DIffERENCE VEGETATION INDEX
-#osservo in che stato di salute è la vegetazione
-#noto che la vegetazione (foresta amazzonica) è molto verde
-dvi1 <- chad1$chad1973.1 - chad1$chad1973.2
-plot(dvi1)
-
-dvi2 <- chad2$chad1987.1 - chad2$chad1987.2
-plot(dvi2)
+#PCA
+#SPECTRAL SIGNATURES
 
 #tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
 #tramite la funzione lapply applico un'altra funzione (raster) alla lista di file
 #con la funzione stack raggruppo un numero di file raster tutti assieme in un unico set
 #plotto il set di dati 
 #in questo modo ottengo un grafico con i 4 file direttamente presentati con il loro nome
+library(rasterVis)#necessaria per levelplot
+
 rlist<- list.files(pattern="chad")
 rlist
 import<- lapply(rlist,raster)
 import
-ch<- stack(import)
-plot(ch)
+ch <- stack(import)
+levelplot(ch) ###devono avere stessa dimensione
 
 
 
