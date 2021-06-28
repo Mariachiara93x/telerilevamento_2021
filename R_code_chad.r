@@ -91,6 +91,68 @@ plot(ndvi1, ndvi3, col="red", pch=18, cex=2)#non va, perché???
 
 
 #PCA
+#Faccio una PCA relativamente alle 3 immagini
+#per fare la PCA serve il pacchetto RStoolbox
+setwd("C:/lab/CH")
+library(raster)
+library(RStoolbox)
+
+chad1 <- raster("chad1973.jpg")
+chad1
+plot(chad1)
+
+cl <- colorRampPalette(c("dark blue","light blue","light green","orange", "yellow")) (200)
+plot(chad1, col=cl)
+
+
+chad3 <- raster("chad2017.jpg")
+chad3
+plot(chad3)
+
+cl <- colorRampPalette(c("dark blue","light blue","light green","orange", "yellow")) (200)
+plot(chad3, col=cl)
+
+par(mfrow=c(1,2))
+plot(chad1, col=cl1)
+plot(chad3, col=cl2)
+
+# faccio la differenza tra la mappa del 2017 (chad3) e quella del 1973 (chad1) e la plotto nella colorramppalette creata prima
+CHdif1 <- chad3 - chad1
+plot(CHdif1, col=cl)
+
+#inverto, facendo 1973 - 2017
+CHdif2 <- chad1 - chad3
+plot(CHdif2, col=cl)
+
+#questo par mi serve solo per osservare bene le due differenze messe a confronto
+#noto che nella prima (CHdif1) la differenza si concentra nell' arancio-giallo (differenza in positivo poiché chad2017 ha valori più alti)
+#nella seconda (CHdif2) la differenza si concentra nel colore azzurro (differenza in negativo che conferma che chad1973 ha valori inferiori)
+par(mfrow=c(1,2))
+plot(CHdif1, col=cl)
+plot(CHdif2, col=cl)
+
+#plotto tutte le immagini insieme per osservare:
+#Chad Lake nel 1973, Chad Lake nel 2017 e differenza tra Chad Lake 2017 e Chad Lake 1973
+par(mfrow=c(1,3))
+plot(chad1, col=cl, main="Chad Lake in 1973")
+plot(chad3, col=cl, main="Chad Lake in 2017")
+plot(CHdif1, col=cl, main="Difference (2017 - 1973)")
+
+#importo tutto il set di immagini nella cartella CH
+rlist<- list.files(pattern="chad")
+rlist
+import<- lapply(rlist,raster)
+import
+CH <- stack(import)
+
+CHpca<-rasterPCA(CH)
+summary(CHpca$model)
+plotRGB(CHpca$map, r=1, g=2, b=3, stretch="lin")
+
+
+
+
+
 #SPECTRAL SIGNATURES
 
 #tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
