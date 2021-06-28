@@ -311,6 +311,31 @@ geom_line (aes(y=P2c), color="blue")+
 geom_line (aes(y=P3c), color="red")+
 labs(x="band", y="reflactance Lake Chad 2017")
 
+#TABELLA + FIRME SPETTRALI CHAD 1973 E CHAD 2017
+
+band <- c(1,2,3)
+P1a <- c(1,53,67)
+P2a <- c(7,45,58)
+P3a <- c(6,71,73)
+P1c <- c(151,22,52)
+P2c <- c(164,29,59)
+P3c <- c(19,58,73)
+
+data.frame(band,P1a, P2a, P3a, P1c, P2c, P3c)
+spectrals7317 <- data.frame(band,P1a, P2a, P3a, P1c, P2c, P3c)
+
+ggplot(spectrals7317, aes(x=band)) + 
+geom_line (aes(y=P1a), color="green")+
+geom_line (aes(y=P2a), color="blue")+
+geom_line (aes(y=P3a), color="red")+
+geom_line (aes(y=P1c), color="pink")+
+geom_line (aes(y=P2c), color="black")+
+geom_line (aes(y=P3c), color="orange")+ #noto che assume simile andamento ai Pa, questo proprio perché in quel punto è tornata l'acqua!
+labs(x="band", y="reflactance Lake Chad 1973-2017")
+
+
+
+
 
 
 
