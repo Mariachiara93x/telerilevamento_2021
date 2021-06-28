@@ -90,9 +90,8 @@ plot(ndvi3, col=cl, main="NDVI in 2017")
 plot(ndvi1, ndvi3, col="red", pch=18, cex=2)#non va, perché???
 
 
-#PCA
-#Faccio una PCA relativamente alle 3 immagini
-#per fare la PCA serve il pacchetto RStoolbox
+#DIFFERENZA TRA CHAD 2017 E CHAD 1973
+
 setwd("C:/lab/CH")
 library(raster)
 library(RStoolbox)
@@ -138,37 +137,116 @@ plot(chad1, col=cl, main="Chad Lake in 1973")
 plot(chad3, col=cl, main="Chad Lake in 2017")
 plot(CHdif1, col=cl, main="Difference (2017 - 1973)")
 
-#importo tutto il set di immagini nella cartella CH
+#PCA
+#importo tutto il set di immagini della cartella CH 
+#tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
+#tramite la funzione lapply applico un'altra funzione (raster) alla lista di file
+#con la funzione stack raggruppo un numero di file raster tutti assieme in un unico set
+#plotto il set di dati 
+#in questo modo ottengo un grafico con i 3 file direttamente presentati con il loro nome
 rlist<- list.files(pattern="chad")
 rlist
 import<- lapply(rlist,raster)
 import
 CH <- stack(import)
+plot(CH, col=cl)
 
+#Faccio una PCA relativamente alle 3 immagini
+#per fare la PCA serve il pacchetto RStoolbox
 CHpca<-rasterPCA(CH)
 summary(CHpca$model)
 plotRGB(CHpca$map, r=1, g=2, b=3, stretch="lin")
-
-
+PC1sd <- focal (CHpca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
+plot(PC1sd, col=cl)
 
 
 
 #SPECTRAL SIGNATURES
+library(raster)
+setwd("C:/lab/CH")
 
-#tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
-#tramite la funzione lapply applico un'altra funzione (raster) alla lista di file
-#con la funzione stack raggruppo un numero di file raster tutti assieme in un unico set
-#plotto il set di dati 
-#in questo modo ottengo un grafico con i 4 file direttamente presentati con il loro nome
-library(rasterVis)#necessaria per levelplot
+#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali
+library(rgdal)
+chad1 <- brick("chad1973.jpg")
+plotRGB(chad1, r=1, g=2, b=3, stretch="hist")
 
-rlist<- list.files(pattern="chad")
-rlist
-import<- lapply(rlist,brick)
-import
-ch <- stack(import)
-levelplot(ch) 
+click(chad1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 
+# x     y   cell       chad1973.1 chad1973.2 chad1973.3
+#1 215.5 367.5 138720          3         55         76
+#       x     y   cell chad1973.1 chad1973.2 chad1973.3
+#1 232.5 218.5 242441          7         45         58
+#x     y   cell chad1973.1 chad1973.2 chad1973.3
+#1 354.5 124.5 307987          6         71         73
+
+#PUNTO 1 N
+#riflettanza banda 1 = 3 (IR)
+#riflettanza banda 2 = 55 (red) 
+#riflettanza banda 3 = 76 (green)
+
+#PUNTO 2 Centro-W
+#riflettanza banda 1 = 7 (IR)
+#riflettanza banda 2 = 45 (red) 
+#riflettanza banda 3 = 58 (green)
+
+#PUNTO 3 S-E
+#riflettanza banda 1 = 6 (IR)
+#riflettanza banda 2 = 71 (red) 
+#riflettanza banda 3 = 73 (green)
+
+
+chad2 <- brick("chad1987.jpg")
+plotRGB(chad2, r=1, g=2, b=3, stretch="hist")
+
+click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+#x     y   cell chad1987.1 chad1987.2 chad1987.3
+#1 213.5 367.5 138718        150        105         82
+#      x     y   cell chad1987.1 chad1987.2 chad1987.3
+#1 231.5 219.5 241744         25          4          3
+# x     y   cell chad1987.1 chad1987.2 chad1987.3
+#1 353.5 123.5 308682        165         31         20
+
+#PUNTO 1 N
+#riflettanza banda 1 = 150 (IR)
+#riflettanza banda 2 = 105 (red) 
+#riflettanza banda 3 = 82 (green)
+
+#PUNTO 2 Centro-W
+#riflettanza banda 1 = 25 (IR)
+#riflettanza banda 2 = 4 (red) 
+#riflettanza banda 3 = 3 (green)
+
+#PUNTO 3 S-E
+#riflettanza banda 1 = 165 (IR)
+#riflettanza banda 2 = 31 (red) 
+#riflettanza banda 3 = 20 (green)
+    
+
+chad3 <- brick("chad2017.jpg")
+plotRGB(chad3, r=1, g=2, b=3, stretch="hist")
+
+click(chad3, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+  #x     y   cell chad2017.1 chad2017.2 chad2017.3
+#1 215.5 367.5 138720        175         15         49
+  #x     y   cell chad2017.1 chad2017.2 chad2017.3
+#1 232.5 218.5 242441        164         29         59
+    #  x     y   cell chad2017.1 chad2017.2 chad2017.3
+#1 354.5 124.5 307987         19         58         73
+
+#PUNTO 1 N
+#riflettanza banda 1 = 175 (IR)
+#riflettanza banda 2 = 15 (red) 
+#riflettanza banda 3 = 49 (green)
+
+#PUNTO 2 Centro-W
+#riflettanza banda 1 = 164 (IR)
+#riflettanza banda 2 = 29 (red) 
+#riflettanza banda 3 = 59 (green)
+
+#PUNTO 3 S-E
+#riflettanza banda 1 = 19 (IR)
+#riflettanza banda 2 = 58 (red) 
+#riflettanza banda 3 = 73 (green)
 
 
 
