@@ -170,26 +170,35 @@ library(rgdal)
 chad1 <- brick("chad1973.jpg")
 plotRGB(chad1, r=1, g=2, b=3, stretch="hist")
 
+# utilizzo la funzione CLICK per cliccare su una mappa e ottenere informazioni relative a quel punto
+# in questo caso, le info sono relative alla riflettanza
+#T= true
+#id= argomento che stabilisce se voglio creare un identificativo per ogni punto
+#xy= arg che indica che vogliamo utilizzare un'informazione parziale
+#cell= arg che indica che clicco su un pixel
+#type= arg che indica il tipo di click, in questo caso il "punto, p"
+#pch= arg che indica lo stile del punto
+
 click(chad1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 
-# x     y   cell       chad1973.1 chad1973.2 chad1973.3
-#1 215.5 367.5 138720          3         55         76
-#       x     y   cell chad1973.1 chad1973.2 chad1973.3
-#1 232.5 218.5 242441          7         45         58
-#x     y   cell chad1973.1 chad1973.2 chad1973.3
-#1 354.5 124.5 307987          6         71         73
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 201.5 335.5 160978        1         53         67
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 232.5 218.5 242441        7         45         58
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 354.5 124.5 307987        6         71         73
 
-#PUNTO 1 N
-#riflettanza banda 1 = 3 (IR)
-#riflettanza banda 2 = 55 (red) 
-#riflettanza banda 3 = 76 (green)
+#PUNTO 1 N (interessante messo a confronto con il terzo)
+#riflettanza banda 1 = 1 (IR) 
+#riflettanza banda 2 = 53 (red) 
+#riflettanza banda 3 = 67 (green)
 
-#PUNTO 2 Centro-W
+#PUNTO 2 Centro-W (interessante messo a confronto con il terzo, ma volendo con entrambi)
 #riflettanza banda 1 = 7 (IR)
 #riflettanza banda 2 = 45 (red) 
 #riflettanza banda 3 = 58 (green)
 
-#PUNTO 3 S
+#PUNTO 3 S (interessante messo a confronto con tutti e tre)
 #riflettanza banda 1 = 6 (IR)
 #riflettanza banda 2 = 71 (red) 
 #riflettanza banda 3 = 73 (green)
@@ -199,17 +208,17 @@ chad2 <- brick("chad1987.jpg")
 plotRGB(chad2, r=1, g=2, b=3, stretch="hist")
 
 click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
-#x     y   cell chad1987.1 chad1987.2 chad1987.3
-#1 213.5 367.5 138718        150        105         82
-#      x     y   cell chad1987.1 chad1987.2 chad1987.3
-#1 231.5 219.5 241744         25          4          3
-# x     y   cell chad1987.1 chad1987.2 chad1987.3
-#1 353.5 123.5 308682        165         31         20
+#  x     y   cell      chad1987.1 chad1987.2 chad1987.3
+# 1 201.5 336.5 160282      138        103         83
+#  x     y   cell      chad1987.1 chad1987.2 chad1987.3
+# 1 231.5 219.5 241744      25          4          3
+#  x     y   cell      chad1987.1 chad1987.2 chad1987.3
+# 1 353.5 123.5 308682      165         31         20
 
 #PUNTO 1 N
-#riflettanza banda 1 = 150 (IR)
-#riflettanza banda 2 = 105 (red) 
-#riflettanza banda 3 = 82 (green)
+#riflettanza banda 1 = 138 (IR) (rispetto a chad1 aumenta di molto: inizia a formarsi copertura vegetale)
+#riflettanza banda 2 = 103 (red) 
+#riflettanza banda 3 = 83 (green)
 
 #PUNTO 2 Centro-W
 #riflettanza banda 1 = 25 (IR)
@@ -217,7 +226,7 @@ click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 #riflettanza banda 3 = 3 (green)
 
 #PUNTO 3 S
-#riflettanza banda 1 = 165 (IR)
+#riflettanza banda 1 = 165 (IR) (niente acqua)
 #riflettanza banda 2 = 31 (red) 
 #riflettanza banda 3 = 20 (green)
     
@@ -226,17 +235,17 @@ chad3 <- brick("chad2017.jpg")
 plotRGB(chad3, r=1, g=2, b=3, stretch="hist")
 
 click(chad3, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
-  #x     y   cell chad2017.1 chad2017.2 chad2017.3
-#1 215.5 367.5 138720        175         15         49
-  #x     y   cell chad2017.1 chad2017.2 chad2017.3
-#1 232.5 218.5 242441        164         29         59
-    #  x     y   cell chad2017.1 chad2017.2 chad2017.3
-#1 354.5 124.5 307987         19         58         73
+#  x     y   cell       chad2017.1 chad2017.2 chad2017.3
+# 1 201.5 333.5 162370     151         22         52
+#   x     y   cell      chad2017.1 chad2017.2 chad2017.3
+# 1 232.5 218.5 242441     164         29         59
+#   x     y    cell     chad2017.1 chad2017.2 chad2017.3
+# 1 354.5 124.5 307987     19         58         73
 
 #PUNTO 1 N
-#riflettanza banda 1 = 175 (IR)
-#riflettanza banda 2 = 15 (red) 
-#riflettanza banda 3 = 49 (green)
+#riflettanza banda 1 = 151 (IR)
+#riflettanza banda 2 = 22 (red) 
+#riflettanza banda 3 = 52 (green)
 
 #PUNTO 2 Centro-W
 #riflettanza banda 1 = 164 (IR)
@@ -244,9 +253,64 @@ click(chad3, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 #riflettanza banda 3 = 59 (green)
 
 #PUNTO 3 S
-#riflettanza banda 1 = 19 (IR)
+#riflettanza banda 1 = 19 (IR) (ritorna acqua)
 #riflettanza banda 2 = 58 (red) 
 #riflettanza banda 3 = 73 (green)
+
+#CREO TABELLE
+#b= banda (prima colonna); P1a= punto a Nord (seconda colonna); P2a= punto al centro (terza colonna); P3a= punto a Sud (quarta colonna)
+#per "P1a", "P2a" e "P3a" riporto i valori ottenuti in precedenza tramite il click
+
+#TABELLA CHAD 1973
+band <- c(1,2,3)
+P1a <- c(1,53,67)
+P2a <- c(7,45,58)
+P3a <- c(6,71,73)
+
+#utilizzo la funzione data.frame per creare la tabella
+data.frame(band,P17a, P2a, P3a)
+spectrals <- data.frame(band,P1a, P2a, P3a)
+
+##FIRMA SPETTRALE CHAD 1973
+library(ggplot2)
+ggplot(spectrals, aes(x=band)) + 
+geom_line (aes(y=P1a), color="green")+
+geom_line (aes(y=P2a), color="blue")+
+geom_line (aes(y=P3a), color="red")+
+labs(x="band", y="reflactance Lake Chad 1973")
+
+#TABELLA CHAD 1987
+band <- c(1,2,3)
+P1b <- c(138,103,83)
+P2b <- c(25,4,3)
+P3b <- c(165,31,28)
+
+data.frame(band,P1b, P2b, P3b)
+spectrals <- data.frame(band,P1b, P2b, P3b)
+
+#FIRMA SPETTRALE CHAD 1987
+ggplot(spectrals, aes(x=band)) + 
+geom_line (aes(y=P1b), color="green")+
+geom_line (aes(y=P2b), color="blue")+
+geom_line (aes(y=P3b), color="red")+
+labs(x="band", y="reflactance Lake Chad 1987")
+
+#TABELLA CHAD 2017
+band <- c(1,2,3)
+P1c <- c(151,22,52)
+P2c <- c(164,29,59)
+P3c <- c(19,58,73)
+
+data.frame(band,P1c, P2c, P3c)
+spectrals <- data.frame(band,P1c, P2c, P3c)
+
+#FIRMA SPETTRALE CHAD 2017
+ggplot(spectrals, aes(x=band)) + 
+geom_line (aes(y=P1c), color="green")+
+geom_line (aes(y=P2c), color="blue")+
+geom_line (aes(y=P3c), color="red")+
+labs(x="band", y="reflactance Lake Chad 2017")
+
 
 
 
