@@ -846,8 +846,8 @@ cl <- colorRampPalette(c("light blue","light green","orange", "yellow")) (200)
 plot(EN013, col=cl)
 
 # facccio la differenza tra la mappa di marzo (EN013) e quella di gennaio (EN01) e la plotto
-ENdif <- EN013 - EN01
-plot(ENdif, col=cl)
+ENdif1 <- EN013 - EN01
+plot(ENdif1, col=cl)
 #avendo valori più bassi a marzo, noto che la differenza è in negativo (colore azzurrino)
 
 #inverto, facendo gennaio - marzo
@@ -855,8 +855,13 @@ ENdif2 <- EN01 -EN013
 plot(ENdif2, col=cl)
 #in questo caso noto che la differenza si concentra nel colore arancio-giallo
 
+#plotto entrambe le differenze per osservare bene cosa cambia
+par(mfrow=c(1,2))
+plot(ENdif1, col=cl)
+plot(ENdif2, col=cl)
+
 #plotto tutte le immagini insieme
-par(mfrow=c(3,1))
+par(mfrow=c(1,3))
 plot(EN01, col=cl, main="NO2 in January")
 plot(EN013, col=cl, main="NO2 in March")
 plot(ENdif2, col=cl, main="Difference (January - March)")
