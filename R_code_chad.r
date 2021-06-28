@@ -189,7 +189,7 @@ click(chad1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 #riflettanza banda 2 = 45 (red) 
 #riflettanza banda 3 = 58 (green)
 
-#PUNTO 3 S-E
+#PUNTO 3 S
 #riflettanza banda 1 = 6 (IR)
 #riflettanza banda 2 = 71 (red) 
 #riflettanza banda 3 = 73 (green)
@@ -216,7 +216,7 @@ click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 #riflettanza banda 2 = 4 (red) 
 #riflettanza banda 3 = 3 (green)
 
-#PUNTO 3 S-E
+#PUNTO 3 S
 #riflettanza banda 1 = 165 (IR)
 #riflettanza banda 2 = 31 (red) 
 #riflettanza banda 3 = 20 (green)
@@ -243,7 +243,7 @@ click(chad3, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 #riflettanza banda 2 = 29 (red) 
 #riflettanza banda 3 = 59 (green)
 
-#PUNTO 3 S-E
+#PUNTO 3 S
 #riflettanza banda 1 = 19 (IR)
 #riflettanza banda 2 = 58 (red) 
 #riflettanza banda 3 = 73 (green)
