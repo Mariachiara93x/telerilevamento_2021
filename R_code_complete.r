@@ -1054,7 +1054,7 @@ zona4 <- c(2,20,56)
 
 spectralsgeo <- data.frame (band, zona1, zona2, zona3, zona4)
 
-ggplot(spectrals, aes(x=band)) + 
+ggplot(spectralsgeo, aes(x=band)) + 
 geom_line (aes(y=zona1), color="yellow") +
 geom_line (aes(y=zona2), color="green") +
 geom_line (aes(y=zona3), color="red") +
