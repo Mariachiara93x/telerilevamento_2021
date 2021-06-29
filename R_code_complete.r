@@ -20,16 +20,33 @@
 
 # Il mio primo codice in R per il telerilevamento!
 
-#install.packages ("raster")
+install.packages ("raster") #installo il pacchetto raster
+#il pacchetto raster serve a gestire dati nel formato raster
+#raster=griglia ortogonale di punti che vanno a costituire l'immagine 
+#elemento minimo della griglia è il pixel
+#ogni pixel è associato ad un colore specifico, definito come una combinazione di tre componenti (blu, rosso, verde)
 library(raster)
 
-setwd("C:/lab/") # Windows
+#seleziono la cartella (lab) presente nel disco C del mio computer, secondo il mio sistema operativo
+setwd("C:/lab/") # questa modalità di selezione è valida per Windows
 
-#Questa funzione serve a importare un'immagine satellitare
-p224r63_2011 <- brick ("p224r63_2011_masked.grd.") #brick 
-p224r63_2011
+#La funzione brick serve a importare un'immagine satellitare in tutte le sue bande disponibili
+#in questo caso importerò 7 bande
+#associo la funzione brick all'oggetto "p224r63_2011"
+#scelgo l'immagine della riserva del Parakana 
+p224r63_2011 <- brick ("p224r63_2011_masked.grd.")  
+p224r63_2011 #ottengo info sull'immagine
+#class      : RasterBrick 
+#dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
+#resolution : 30, 30  (x, y)
+#extent     : 579765, 668775, -522705, -477735  (xmin, xmax, ymin, ymax)
+#crs        : +proj=utm +zone=22 +datum=WGS84 +units=m +no_defs 
+#source     : C:/lab/p224r63_2011_masked.grd 
+#names      :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,        B6_bt,       B7_sre 
+#min values : 0.000000e+00, 0.000000e+00, 0.000000e+00, 1.196277e-02, 4.116526e-03, 2.951000e+02, 0.000000e+00 
+#max values :    0.1249041,    0.2563655,    0.2591587,    0.5592193,    0.4894984,  305.2000000,    0.3692634 
 
-plot(p224r63_2011) #tramite la funzione plot posso visualizzare l'immagine direttamente su R
+plot(p224r63_2011) #tramite la funzione plot posso visualizzare l'immagine direttamente su R nelle sue bande disponibili, in questo caso 7
 
 
 # colour change: cambio colore utilizzando la funzione colorRampPalette selezionando le tonalità nero-grigio
@@ -38,9 +55,13 @@ cl <- colorRampPalette(c("black","grey","light grey")) (100)
 plot(p224r63_2011, col=cl)
 
 
-# colour change -> new: scelgo dei colori a piacimento variando anche i livelli (da 100 a 200)
+# colour change -> new: scelgo dei colori a piacimento variando anche i livelli (da 100 a 200) 
 cl <- colorRampPalette(c("pink", "light blue", "dark green", "purple", "orange", "dark red")) (200)
 plot(p224r63_2011, col=cl)
+
+#LANDSAT -> è un gruppo di satelliti per telerilevamento che osservano la Terra
+#ha una risoluzione spaziale di 30m e ricopre la Terra in 4 giorni
+#Landsat orbits (path and row system) -> sinusoidi e righe che si intersecano e creano l'immagine
 
 # Bande Landsat
 # B1: blu
@@ -54,12 +75,13 @@ plot(p224r63_2011, col=cl)
 # dev.off pulirà la finestra grafica
 dev.off()
 
-plot(p224r63_2011$B1_sre)#visualizzo l'immagine nella banda del BLU utlizzando il simbolo $ che serve a collegare un blocco ad un altro
+plot(p224r63_2011$B1_sre) #visualizzo l'immagine nella banda del BLU utlizzando il simbolo $ che serve a collegare un blocco ad un altro
 
-# plot band 1 with predefined colourramppalette
+# plot band 1 con colourramppalette predefinita (col=cl)
 cl <- colorRampPalette(c("pink", "light blue", "dark green", "purple", "orange", "dark red")) (200)
 plot(p224r63_2011$B1_sre, col=cl)
 
+#uso la funzione par per creare un multiframe
 #creo il multiframe di B1 e B2, 1 row, 2 columns: potrò visualizzare tramite la funzione par, la stessa immagine due volte, una nella banda del blu, l'altra nella banda del verde
 par(mfrow=c(1,2))
 plot(p224r63_2011$B1_sre)
@@ -70,14 +92,14 @@ par(mfrow=c(2,1)) #se uso prima le colonne: par(mfcol...)
 plot(p224r63_2011$B1_sre)
 plot(p224r63_2011$B2_sre)
 
-#plot the first four bands of Landsat (4 columns, 1 row): visualizzo l'immagine nelle 4 bande, scegliendo l'opzione 4 rows 1 column
+#plotto le prime 4 bande di Landsat(4 columns, 1 row)
 par(mfrow=c(4,1))
 plot(p224r63_2011$B1_sre)
 plot(p224r63_2011$B2_sre)
 plot(p224r63_2011$B3_sre)
 plot(p224r63_2011$B4_sre)
 
-#plot the first four bands of Landsat (2 columns, 2 rows): visualizzo l'immagine nelle 4 bande, scegliendo l'opzione 2 rows 2 columns
+#plotto le prime 4 bande di Landsat(2 columns, 2 rows)
 par(mfrow=c(2,2))
 plot(p224r63_2011$B1_sre)
 plot(p224r63_2011$B2_sre)
@@ -88,15 +110,15 @@ plot(p224r63_2011$B4_sre)
 clb <- colorRampPalette(c("dark blue", "blue", "light blue")) (100)
 plot(p224r63_2011$B1_sre, col=clb)
 
-#aggiungo al plot della prima banda (BLU), il plot della seconda(VERDE): utilizzo la funzione colourramppalette per selezionare le tonalità del VERDE
+#plotto la seconda banda (VERDE): utilizzo la funzione colourramppalette per selezionare le tonalità del VERDE
 clg <- colorRampPalette(c("dark green", "green", "light green")) (100)
 plot(p224r63_2011$B2_sre, col=clg)
 
-#aggiungo al plot della prima (BLU) e della seconda banda (VERDE), il plot della terza (ROSSO): utilizzo la funzione colourramppalette per selezionare le tonalità del ROSSO
+#plotto la terza banda (ROSSO): utilizzo la funzione colourramppalette per selezionare le tonalità del ROSSO
 clr <- colorRampPalette(c("dark red", "red", "pink")) (100)
 plot(p224r63_2011$B3_sre, col=clr)
 
-#aggiungo al plot della prima (BLU), seconda (VERDE) e terza banda (ROSSO), il plot della quarta (NIR):  utilizzo la funzione colourramppalette per selezionare delle tonalità a piacimento 
+#plotto la quarta banda (NIR): utilizzo la funzione colourramppalette per selezionare delle tonalità a piacimento 
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
 plot(p224r63_2011$B4_sre, col=clnir)
 
@@ -110,7 +132,9 @@ plot(p224r63_2011$B4_sre, col=clnir)
 # B6: infrarosso termico
 # B7: infrarosso medio
 
-#Utilizzo schema RGB con il quale visualizzo tre bande alla volta -> spiega stretch
+#Utilizzo schema RGB con il quale visualizzo tre bande alla volta 
+#uso la funzione "stretch" per "stirare i valori" della mappa
+#in un'immagine, una certa banda può avere valori solo da 14 a 55(ad es), con stretch (lineare) posso vedere tutti i valori (quindi i colori) da 0 a 255
 plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
@@ -126,7 +150,8 @@ plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="lin")
 dev.off()
 
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist") #visualizzo 
+#con il valore hist determino una curva e non più una linea (come in lin): in pratica "stiro" ulteriormente i colori e ottengo un'immagine con più dettaglio 
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist") 
 
 #par natural colours, false colours and false colours with histogram stretching
 par(mfrow=c(3,1))
@@ -135,15 +160,15 @@ plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist")
 
 #Multitemporal set
+#osservo le variazioni nel tempo relativamente al luogo dell'immagine: 1988 e 2011
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
 p224r63_1988
 
 plot(p224r63_1988)
 plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="lin")
-
-#hist
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
-pdf("multitemp.pdf")
+pdf("multitemp.pdf") #creo il pdf di quello che ho fatto su R
+
 par(mfrow=c(2,2))
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="lin")
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
@@ -162,14 +187,12 @@ library(raster)
 
 setwd("C:/lab/greenland") 
 
-# cartella greenland con 4 file,4 strati separati
+# cartella greenland contiene 4 file riferiti a 4 strati separati (sono i file .tif che iniziano con lst)
 # i file .tif rappresentano la stima della temperatura LST (land surface temperature)
 
 #LST da Copernicus (Global Land Service)
 #la funzione brick non può essere utilizzata perchè i 4 file sono 4 file separati
-
-# raster crea un rasterlayer
-# uso la funzione raster per ogni file lst_x.tif
+#utilizzo la funzione raster per ciascun file per creare un rasterlayer
 lst_2000<- raster("lst_2000.tif")
 lst_2005<- raster("lst_2005.tif")
 lst_2010<- raster("lst_2010.tif")
@@ -181,40 +204,37 @@ plot(lst_2010)
 plot(lst_2015)
 
 #LIST FILES
-# list.files crea la lista di file che R utilizzerà per la funzione lapply
-
-# serve un pattern, cioè una configurazione comune a tutti i file, per caricare la lista di tutti questi: in questo caso utilizzo il pattern "lst"
-
-# associo la funzione list.files all'oggetto "rlist" 
+#list.files crea la lista di file che R utilizzerà per la funzione lapply
+#serve un pattern, cioè una configurazione comune a tutti i file, per caricare la lista di tutti questi: in questo caso utilizzo il pattern "lst"
+#associo la funzione list.files all'oggetto "rlist" 
 rlist<- list.files(pattern="lst")
 rlist
-# la funzione lapply permette di applicare un'altra funzione (es. raster) ad una lista di file (tipo quella dei file "lst")
-# serve X ovvero la lista alla quale applicare la funzione
-# serve FUN ovvero la funzione da applicare 
-# X= rlist
-# FUN= raster
-# associo un nome all'oggetto ovvero "import"
+#la funzione lapply permette di applicare un'altra funzione (es. raster) ad una lista di file (tipo quella dei file "lst")
+#serve X ovvero la lista alla quale applicare la funzione
+#serve FUN ovvero la funzione da applicare 
+#X= rlist
+#FUN= raster
+#associo un nome all'oggetto ovvero "import"
 import<- lapply(rlist,raster)
 import
-# la funzione stack permette di raggruppare un numero di file raster tutti assieme in un unico blocco
-# associo un nome all'oggetto ovvero "TGr" (Temperature Greenland)
+#con la funzione stack raggruppo un numero di file raster tutti assieme in un unico blocco
+#associo un nome all'oggetto ovvero "TGr" (Temperature Greenland)
 TGr<- stack(import)
-# in questo modo posso fare il plot dei file .tif facendo il solo plot dell'ogggetto TGr appena creato
+#in questo modo posso fare il plot dei file .tif facendo il solo plot dell'ogggetto TGr appena creato
 plot(TGr)
-# utilizzo la funzione PlotRGB come nei casi studio precedenti
-# scelgo uno stretch di tipo lineare
-# scelgo le varie bande
-plotRGB(TGr,1,2,3,stretch="Lin")
-plotRGB(TGr,2,3,4,stretch="Lin")
-plotRGB(TGr,4,3,2,stretch="Lin")
+#utilizzo la funzione PlotRGB come nei casi studio precedenti
+#scelgo uno stretch di tipo lineare
+#scelgo le varie bande
+plotRGB(TGr,1,2,3,stretch="lin")
+plotRGB(TGr,2,3,4,stretch="lin")
+plotRGB(TGr,4,3,2,stretch="lin")
 
-#installo pacchetto rasterVis
-install.packages(rasterVis)
 
 #day 3
 setwd("C:/lab/Greenland/")
 library(raster)
-library(rasterVis)
+install.packages(rasterVis) #installo il pacchetto rasterVis che mi servirà dopo per la funzione levelplot
+library(rasterVis) 
 
 rlist <- list.files(pattern="lst")
 rlist
@@ -244,7 +264,7 @@ levelplot(TGr,col.regions=cl,  names.attr=c("July 2000","July 2005", "July 2010"
 #inserendo l'argomento "main" posso inserire anche il titolo all'immagine
 levelplot(TGr,col.regions=cl, main="LST variation in time", names.attr=c("July 2000","July 2005", "July 2010", "July 2015"))
     
-# Melt
+#MELT
 #tramite i file melt.tif ottengo dati sullo scioglimento dei ghiacci dal 1979 al 2007
 #creo una lista dei file melt.tif, scegliendo il pattern comune a tutti "melt"
 meltlist <- list.files(pattern="melt")
@@ -274,9 +294,6 @@ clb <- colorRampPalette(c("blue","white","red"))(100)
 plot(melt_amount, col=clb) 
 #applico un levelplot per osservare, oltre allo scioglimento dal 1979 al 2007, anche le medie sugli assi X e Y
 levelplot(melt_amount, col.regions=clb)
-
-#installo pacchetto knitr
-install.packages("knitr")
 
 setwd("C:/lab/Greenland/")
 library(raster)
@@ -322,17 +339,18 @@ plot(criosferares, col=cl)
 
 setwd("C:/lab/")
 
+#installo pacchetto knitr
+install.packages("knitr")
 library(knitr)
 
 #creo un file di testo con il codice creato all'interno di R_code_time series
 #rinomino il file con "R_code_greenland.r"
 #inserisco il file di testo all'interno della cartella lab
-
 #utilizzo la funzione stitch per creare il report
 #inserisco come argomento per stitch il nome del file "R_code_greenland.txt"
 #con tutta questa operazione salverò nella cartella lab il report generato
 stitch("R_code_greenland.r.txt", template=system.file("misc", "knitr-template.Rnw", package="knitr"))
-#in automatico si genera una cartella di nome figure
+#in automatico si genera (in lab) una cartella di nome "figure"
 #dentro figure sono presenti tutte le immagini del codice
 
 #se la cartella non si genera in automatico, scarico direttamente la cartella di "R_code_time_series.r" 
@@ -345,7 +363,7 @@ stitch("R_code_time_series.r", template=system.file("misc", "knitr-template.Rnw"
 #5. R code multivariate analysis
 
 #R_code_multivariate_analysis.r
-#utilizzo l'ANALISI MULTIVARIATA nel caso in cui ho tante bande a disposizione, ma un'informazione molto correlata (all'aumentare di riflettanza di banda x aumenta anche quella di banda y)
+#utilizzo l'ANALISI MULTIVARIATA nel caso in cui abbia tante bande a disposizione, ma un'informazione molto correlata (all'aumentare di riflettanza di banda x aumenta anche quella di banda y)
 #compatto dati per vedere tutti il sistema insieme in poche bande
 #riesco a compattare perché in pratica scelgo di utilizzare una banda che spieghi una quantità maggiore di variabilità
 
