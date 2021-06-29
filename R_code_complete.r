@@ -368,16 +368,12 @@ stitch("R_code_time_series.r", template=system.file("misc", "knitr-template.Rnw"
 #riesco a compattare perché in pratica scelgo di utilizzare una banda che spieghi una quantità maggiore di variabilità
 
 library(raster)
-library(RStoolbox)
-
 setwd("C:/lab/")
 #scelgo l'immagine della riserva del Parakana (p224r63_2011_masked.grd)
 #utilizzo la funzione brick per caricare un set multiplo di dati 
-#associo la funzione brick con l'immagine al nome e poi plotto
 p224r63_2011<- brick("p224r63_2011_masked.grd")
-plot(p224r63_2011)
-#visualizzo le varie informazioni sull'immagine
 p224r63_2011
+plot(p224r63_2011)
 
 #creo un grafico plottando i valori dei pixel della banda 1 contro i valori dei pixel della banda 2
 #utilizzo il $ per legare la B1 all'immagine, poiché si trova all'interno del dataset p224r63_2011
@@ -398,8 +394,6 @@ pairs(p224r63_2011)
 
 #28/04
 library(raster)
-library(RStoolbox)
-
 setwd("C:/lab/")
 p224r63_2011<- brick("p224r63_2011_masked.grd")
 p224r63_2011
@@ -420,11 +414,14 @@ plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
 plotRGB(p224r63_2011res,r=4,g=3,b=2, stretch="lin")
 
 #faccio la PCA del dataset p224r63_2011res
+#PCA sta per Principal Component Analysis
+#esegue un'analisi dei componenti principali del dataset che può contenere valori mancanti o molto correlati tra loro
+#per ovviare al "problema", tramite la pca analizzo solo alcuni componenti     
 #questo dataset contiene al suo interno il modello, la mappa, ecc
-#prende pacchetto di dati e lo compatta in un numero minore di bande
+#prende il pacchetto di dati e lo compatta in un numero minore di bande
 p224r63_2011res_pca<-rasterPCA(p224r63_2011res)
-#applico la funzione SUMMARY per ottenere un sommario del modello
-#con la prima componente viene spiegato il 99,98% della variabilità
+#applico la funzione summary per ottenere un sommario del modello
+#solo con la prima componente viene spiegato il 99,98% della variabilità
 #con le prime tre bande viene spiegato il 99,99% della variabilità
 summary(p224r63_2011res_pca$model)
 #plottando la mappa osservo infatti che nella PC1 ho tante informazioni
@@ -446,7 +443,6 @@ plotRGB(p224r63_2011res_pca$map, r=1, g=2, b=3, stretch="lin")
 library(raster)
 setwd("C:/lab/") 
 
-#utilizzo funzione brick per prendere un pacchetto di dati e creare un rasterbrick
 #il rasterbrick in questione comprende i tre livelli relativi a tre bande
 so <- brick("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
 #digito so e ottengo le informazioni relative
@@ -468,10 +464,11 @@ plotRGB(so, 1, 2, 3, stretch="lin")
 #per ottenere questo grafico, il software compie una classificazione non supervisionata
 #cioè raggruppa automaticamente i pixel rilevando la loro riflettanza, senza che sia l'utente a definire le classi a monte
 #uso il pacchetto RStoolbox per compiere la class. non superv.
+install.packages(RStoolbox)
 library(RStoolbox)
 #uso la funzione unsuperClass e scelgo 3 classi di riferimento
 #la associo all'oggetto soc
-#per ottenere una classificazione che utilizzi sempre le stesse repliche per fare il modello utilizzo la funzione seguente
+#per ottenere una classificazione che utilizzi sempre le stesse repliche per fare il modello utilizzo la funzione set.seed
 set.seed(42)
 soc <- unsuperClass(so,nClasses=3)
 
@@ -547,7 +544,7 @@ grid.arrange(p1, p2, nrow = 2) # this needs gridExtra
 
 #..............................................
 
-#8. Vegetation Indices
+#8. Vegetation Indices ############SPIEGA BENISSSSIIIMOOOOO!!!
 
 #R_code_vegetation_indices.r
 
@@ -593,16 +590,14 @@ difdvi <- dvi1-dvi2
 cld <- colorRampPalette(c('blue','white','red'))(100)
 plot(difdvi, col=cld)
 
-#ndvi
-# (NIR-RED) / (NIR+RED)
+#NDVI = (NIR-RED) / (NIR+RED)
 ndvi1 <- (defor1$defor1.1 - defor1$defor1.2) / (defor1$defor1.1 + defor1$defor1.2)
 plot(ndvi1, col=cl)
-
 
 ndvi2 <- (defor2$defor2.1 - defor2$defor2.2) / (defor2$defor2.1 + defor2$defor2.2)
 plot(ndvi2, col=cl)
  
-#RStoolbox: spectralIndices
+#RStoolbox: spectralIndices #########SPIEGAAAAAAAAAAAAAAAAAAAA!!
 library(RStoolbox)# for vegetation indices calculation
 vi1<- spectralIndices (defor1, green=3, red=2, nir=1)
 plot (vi1, col=cl)
@@ -621,12 +616,12 @@ install.packages("rasterdiv")
 library(rasterdiv)
 
 #worldwide NDVI
-#plottando copNDVI ottengo una mappa globale in cui è visibile l'acqua
+#plottando copNDVI ottengo una mappa globale in cui è visibile l'acqua 
 plot(copNDVI)
 
-# per eliminare l'acqua utilizzo l'argomento cbind della funzione reclassify
+#per eliminare l'acqua utilizzo l'argomento cbind della funzione reclassify
 #in pratica i pixel 253,254,255 possono essere trasformati in NA (= not assigned = "non valori")
-#il : serve a dare il range di valori dei pixel
+#il ":" serve a dare il range di valori dei pixel
 copNDVI<-reclassify(copNDVI, cbind (253:255,NA))
 plot(copNDVI)
 #noto in nord america e nord europa un NDVI più alto
@@ -639,7 +634,7 @@ levelplot(copNDVI)
 
 #..............................................
 
-#9. R code land cover
+#9. R code land cover ########SPIEGAAAAAAAAAAAAAAA!!
 
 #R_code_land_cover.r
 library(raster)
@@ -664,7 +659,6 @@ defor1 <- brick("defor1.jpg")
 plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
 ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
 
-
 defor2 <- brick("defor2.jpg")
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
@@ -674,7 +668,7 @@ plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 
 #per fare il multiframe con il ggplot, non uso par(mfrow)
-#installo il pacchetto gridExtra
+#installo il pacchetto gridExtra per utilizzare la funzione grid.arrange
 install.packages("gridExtra")
 library(gridExtra)
 
@@ -692,7 +686,7 @@ library(gridExtra)
 setwd("C:/lab/") 
 
 #classificazione non supervisionata
-d1c<-unsuperClass(defor1, nClasses=2) #set.seed() oer ottenere lo stesso risultato
+d1c<-unsuperClass(defor1, nClasses=2) #set.seed() per ottenere lo stesso risultato
 plot(d1c$map)
 
 defor2 <- brick("defor2.jpg")
@@ -703,7 +697,7 @@ plot(d2c$map)
 d2c3 <- unsuperClass(defor2, nClasses=3)
 plot(d2c3$map)
 
-#frequecies
+#frequecies  ########SPIEGAAAAAAAAAAA
 freq(d1c$map)
 #     value  count
 [1,]     1  34181
@@ -722,7 +716,7 @@ s2
 prop2 <- freq(d2c$map) / s2
 prop2
 
-#build a dataframe
+#creo un dataframe
 cover <- c("Forest", "Agriculture")
 percent_1992 <- c(89.83, 10.16)
 percent_2006 <- c(52.06, 47.93)
@@ -737,7 +731,7 @@ grid.arrange(p1,p2, nrow=1)
 
 #..............................................
 
-#10. R code variability
+#10. R code variability #########SPIEGAAAAAAAAAAAAAAAAAAAA
 
 #R_code_variability.r
 #Faccio un'analisi di pattern spaziali tramite l'uso di indici del paesaggio: ghiacciao del Similaun
@@ -757,7 +751,7 @@ sent <- brick("sentinel.png")
 
 plotRGB(sent) #non serve che riscrivo i comandi delle tre bande perché vanno di default insieme allo stretch lineare
 
-#osservo l'acqua(nera)
+#osservo l'acqua (nera)
 plotRGB(sent, r=2, b=1, g=3, stretch="lin")
 nir <- sent$sentinel.1
 red <- sent$sentinel.2
@@ -835,7 +829,7 @@ grid.arrange(p1,p2,p3, nrow=2)
 #R_code_no2.r
 #Osservo la distribuzione e la concentrazione di NO2 
 
-#1. Set the working directory EN
+#1.Set the working directory EN
 #Ho creato una cartella nominata EN all'interno di lab: al suo interno sono presenti file png
 #i file sono relativi a immagini telerilevate ed elaborate
 #questi mostrano la distribuzione e concentrazione di NO2 in Europa da Gennaio a Marzo 2020
@@ -863,7 +857,7 @@ plot(EN013)
 cl <- colorRampPalette(c("light blue","light green","orange", "yellow")) (200)
 plot(EN013, col=cl)
 
-# facccio la differenza tra la mappa di marzo (EN013) e quella di gennaio (EN01) e la plotto
+# faccio la differenza tra la mappa di marzo (EN013) e quella di gennaio (EN01) e la plotto
 ENdif1 <- EN013 - EN01
 plot(ENdif1, col=cl)
 #avendo valori più bassi a marzo, noto che la differenza è in negativo (colore azzurrino)
@@ -932,7 +926,7 @@ defor2 <- brick("defor2.jpg")
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 plotRGB(defor2, r=1, g=2, b=3, stretch="hist") # differenze dei colori più accentuate con hist, perché uso curva logistica anziché linea
 
-#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali
+#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali #####SPIEGA
 library(rgdal)
 
 # utilizzo la funzione click per cliccare su una mappa e ottenere informazioni relative a quel punto
@@ -968,7 +962,7 @@ water <- c(45,81,105)
 data.frame(band,forest, water)
 spectrals <- data.frame(band,forest, water)
 
-#PLOTTO LA FIRMA SPETTRALE (SPECTRAL SIGNATURES)
+#PLOTTO LA FIRMA SPETTRALE (SPECTRAL SIGNATURE)
 library(ggplot2)
 ggplot(spectrals, aes(x=band)) + 
 geom_line (aes(y=forest), color="green") #inserisce le geometrie nel plot (ad. es linee)
