@@ -163,7 +163,7 @@ plot(PC1sd, col=cl)
 #COPERNICUS
 
 library(ncdf4)
-lakeq <- raster ("c_gls_LWQ100_201912210000_GLOBAL_MSI_V1.3.nc")
+lakeq <- raster ("c_gls_LWQ100_201912210000_GLOBAL_MSI_V1.3.nc") ###non viene nulla di buono
 
 cl <- colorRampPalette(c("light blue", "red", "green", "orange")) (200)
 plot(lakeq, col=cl)
