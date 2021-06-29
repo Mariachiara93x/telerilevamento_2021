@@ -312,7 +312,8 @@ geom_line (aes(y=P3c), color="red")+
 labs(x="band", y="reflactance Lake Chad 2017")
 
 #TABELLA + FIRME SPETTRALI CHAD 1973 E CHAD 2017
-
+#1) andamento generalmente opposto tra i punti del 1973 e il 2017
+#2) si nota però che il P3c ha un andamento simile ai punti del 1973 e opposto a quelli del 2017 
 band <- c(1,2,3)
 P1a <- c(1,53,67)
 P2a <- c(7,45,58)
@@ -332,6 +333,24 @@ geom_line (aes(y=P1c), color="pink")+
 geom_line (aes(y=P2c), color="black")+
 geom_line (aes(y=P3c), color="orange")+ #noto che assume simile andamento ai Pa, questo proprio perché in quel punto è tornata l'acqua!
 labs(x="band", y="reflactance Lake Chad 1973-2017")
+
+#PLOTTO P3a, P3b e P3C
+#voglio osservare il ritorno dell'acqua in quel punto 
+
+band <- c(1,2,3)
+P3a <- c(6,71,73) #presenza di acqua (valore basso nella banda IR)
+P3b <- c(165,31,28) #assenza di acqua, presenza di vegetazione (alto valore nella banda IR)
+P3c <- c(19,58,73) #ritorno dell'acqua (valore basso nella banda IR)
+
+data.frame(band,P3a, P3b, P3c)
+spectralsw <- data.frame(band,P3a, P3b, P3c)
+
+ggplot(spectralsw, aes(x=band)) + 
+geom_line (aes(y=P3a), color="red", size=1)+
+geom_line (aes(y=P3b), color="green",size=1)+
+geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento ai P3a perché in quel punto è tornata l'acqua!
+
+labs(x="band", y="reflactance Lake Chad")
 
 
 
