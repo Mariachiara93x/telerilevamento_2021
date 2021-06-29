@@ -149,17 +149,20 @@ rlist
 import<- lapply(rlist,raster)
 import
 CH <- stack(import)
-plot(CH, col=cl)
+plot(CH, col=cl) #cl= colori scelti all'inizio (vedi sopra)
 
 #Faccio una PCA relativamente alle 3 immagini
 #per fare la PCA serve il pacchetto RStoolbox
 CHpca<-rasterPCA(CH)
 summary(CHpca$model)
 plotRGB(CHpca$map, r=1, g=2, b=3, stretch="lin")
+
 PC1sd <- focal (CHpca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
 plot(PC1sd, col=cl)
 
+#COPERNICUS
 
+library(ncdf4)
 
 #SPECTRAL SIGNATURES
 library(raster)
@@ -345,7 +348,7 @@ P3c <- c(19,58,73) #ritorno dell'acqua (valore basso nella banda IR)
 data.frame(band,P3a, P3b, P3c)
 spectralsw <- data.frame(band,P3a, P3b, P3c)
 
-ggplot(spectralsw, aes(x=band)) + 
+ggplot(spectralsw, aes(x=band))+ 
 geom_line (aes(y=P3a), color="red", size=1)+
 geom_line (aes(y=P3b), color="green",size=1)+
 geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento ai P3a perché in quel punto è tornata l'acqua!
