@@ -4,7 +4,6 @@ library(raster)
 
 setwd("C:/lab/CH")
 
-
 chad1 <- brick("chad1973.jpg")
 chad1
 plot(chad1)
@@ -27,48 +26,9 @@ plotRGB(chad2, r=1, g=2, b=3, stretch="lin")
 plotRGB(chad3, r=1, g=2, b=3, stretch="lin")
 
 
-#DIffERENCE VEGETATION INDEX
-#osservo in che stato di salute è la vegetazione
-
-#calcolo il DVI per l'anno 1973
-#NIR - RED
-dvi1 <- chad1$chad1973.1 - chad1$chad1973.2
-plot(dvi1)
-
-#color change dvi 1973
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
-plot(dvi1, col=cl, main="DVI in 1973")
-
-#calcolo il DVI per l'anno 1987
-dvi2 <- chad2$chad1987.1 - chad2$chad1987.2
-plot(dvi2)
-
-#color change dvi 1987
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
-plot(dvi2, col=cl, main="DVI in 1987")
-
-#calcolo il DVI per l'anno 2017
-dvi3 <- chad3$chad2017.1 - chad3$chad2017.2
-plot(dvi3)
-
-#color change dvi 2017
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
-plot(dvi3, col=cl, main="DVI in 2017")
-
-#tramite un par osservo i differenti DVI nei tre anni
-par(mfrow=c(2,2))
-plot(dvi1, col=cl, main="DVI in 1973")
-plot(dvi2, col=cl, main="DVI in 1987")
-plot(dvi3, col=cl, main="DVI in 2017")
-
-#calcolo la differenza di DVI tra l'anno 2017 e il 19
-difdvi <- dvi1-dvi3
-
-cld <- colorRampPalette(c('blue','light blue','white','yellow','red'))(300)
-plot(difdvi, col=cld)
-
-#ndvi
+#NDVI
 # (NIR-RED) / (NIR+RED)
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 ndvi1 <- (chad1$chad1973.1 - chad1$chad1973.2) / (chad1$chad1973.1 + chad1$chad1973.2)
 plot(ndvi1, col=cl, main="NDVI in 1973")
 
@@ -84,36 +44,31 @@ plot(ndvi2, col=cl, main="NDVI in 1987")
 plot(ndvi3, col=cl, main="NDVI in 2017")
 #per immagine 1973 osservo: valori NDVI da -1 a -0.4 (presenza di acqua nel lago); ai bordi nella zona SE valori vicini a 0.5
 #per immagine 1987 osservo: valori NDVI circa 0.4 (rimanenza lago a SE); intorno al lago a SE valore 1 (fitta vegetazione)
-#per immagine 2017 osserv0: valori NDVI vicini a -1 (rimanenza lago a SE); il resto del lago riporta valori tra 0.5 e 1 (aumenta superfice vegetativa)
-####################
-
-plot(ndvi1, ndvi3, col="red", pch=18, cex=2)#non va, perché???
+#per immagine 2017 osservo: valori NDVI vicini a -1 (rimanenza lago a SE); il resto del lago riporta valori tra 0.5 e 1 (aumenta superfice vegetativa)
 
 
-#DIFFERENZA TRA CHAD 2017 E CHAD 1973
+########creo un grafico plottando i valori dei pixel di ndvi1 contro i valori dei pixel di ndvi3
+plot(ndvi1, ndvi3, col="red", pch=8, cex=1) 
+
+
+#DIFFERENZA di RIFLETTANZA TRA LAKE CHAD 2017 (chad3) E LAKE CHAD 1973 (chad1)
 
 setwd("C:/lab/CH")
 library(raster)
-library(RStoolbox)
 
 chad1 <- raster("chad1973.jpg")
-chad1
-plot(chad1)
+chad1 #info
 
 cl <- colorRampPalette(c("dark blue","light blue","light green","orange", "yellow")) (200)
 plot(chad1, col=cl)
 
-
 chad3 <- raster("chad2017.jpg")
-chad3
-plot(chad3)
-
-cl <- colorRampPalette(c("dark blue","light blue","light green","orange", "yellow")) (200)
+chad3 #info
 plot(chad3, col=cl)
 
 par(mfrow=c(1,2))
-plot(chad1, col=cl1)
-plot(chad3, col=cl2)
+plot(chad1, col=cl)
+plot(chad3, col=cl)
 
 # faccio la differenza tra la mappa del 2017 (chad3) e quella del 1973 (chad1) e la plotto nella colorramppalette creata prima
 CHdif1 <- chad3 - chad1
@@ -137,48 +92,18 @@ plot(chad1, col=cl, main="Chad Lake in 1973")
 plot(chad3, col=cl, main="Chad Lake in 2017")
 plot(CHdif1, col=cl, main="Difference (2017 - 1973)")
 
-#PCA
-#importo tutto il set di immagini della cartella CH 
-#tramite la funzione list.files visualizzo la lista dei file; scelgo un pattern comune ai file
-#tramite la funzione lapply applico un'altra funzione (raster) alla lista di file
-#con la funzione stack raggruppo un numero di file raster tutti assieme in un unico set
-#plotto il set di dati 
-#in questo modo ottengo un grafico con i 3 file direttamente presentati con il loro nome
-rlist<- list.files(pattern="chad")
-rlist
-import<- lapply(rlist,raster)
-import
-CH <- stack(import)
-plot(CH, col=cl) #cl= colori scelti all'inizio (vedi sopra)
-
-#Faccio una PCA relativamente alle 3 immagini
-#per fare la PCA serve il pacchetto RStoolbox
-CHpca<-rasterPCA(CH)
-summary(CHpca$model)
-plotRGB(CHpca$map, r=1, g=2, b=3, stretch="lin")
-
-PC1sd <- focal (CHpca$map$PC1, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-plot(PC1sd, col=cl)
-
-#COPERNICUS
-
-library(ncdf4)
-lakeq <- raster ("c_gls_LWQ100_201912210000_GLOBAL_MSI_V1.3.nc") ###non viene nulla di buono
-
-cl <- colorRampPalette(c("light blue", "red", "green", "orange")) (200)
-plot(lakeq, col=cl)
 
 #SPECTRAL SIGNATURES
 library(raster)
 setwd("C:/lab/CH")
 
 #gdal è la libreria generale per dati geospaziali sia raster sia vettoriali
-library(rgdal)
+library(rgdal) #(posso anche non usarla)
 chad1 <- brick("chad1973.jpg")
 plotRGB(chad1, r=1, g=2, b=3, stretch="hist")
 
-# utilizzo la funzione CLICK per cliccare su una mappa e ottenere informazioni relative a quel punto
-# in questo caso, le info sono relative alla riflettanza
+#utilizzo la funzione CLICK per cliccare su una mappa e ottenere informazioni relative a quel punto
+#in questo caso, le info sono relative alla riflettanza
 #T= true
 #id= argomento che stabilisce se voglio creare un identificativo per ogni punto
 #xy= arg che indica che vogliamo utilizzare un'informazione parziale
@@ -187,7 +112,7 @@ plotRGB(chad1, r=1, g=2, b=3, stretch="hist")
 #pch= arg che indica lo stile del punto
 
 click(chad1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
-
+#OUTPUT:
 #  x     y   cell        chad1973.1 chad1973.2 chad1973.3
 # 1 201.5 335.5 160978        1         53         67
 #  x     y   cell        chad1973.1 chad1973.2 chad1973.3
@@ -215,6 +140,7 @@ chad2 <- brick("chad1987.jpg")
 plotRGB(chad2, r=1, g=2, b=3, stretch="hist")
 
 click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+#OUTPUT:
 #  x     y   cell      chad1987.1 chad1987.2 chad1987.3
 # 1 201.5 336.5 160282      138        103         83
 #  x     y   cell      chad1987.1 chad1987.2 chad1987.3
@@ -242,6 +168,7 @@ chad3 <- brick("chad2017.jpg")
 plotRGB(chad3, r=1, g=2, b=3, stretch="hist")
 
 click(chad3, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+#OUTPUT:
 #  x     y   cell       chad2017.1 chad2017.2 chad2017.3
 # 1 201.5 333.5 162370     151         22         52
 #   x     y   cell      chad2017.1 chad2017.2 chad2017.3
@@ -275,7 +202,7 @@ P2a <- c(7,45,58)
 P3a <- c(6,71,73)
 
 #utilizzo la funzione data.frame per creare la tabella
-data.frame(band,P17a, P2a, P3a)
+data.frame(band,P1a, P2a, P3a)
 spectrals <- data.frame(band,P1a, P2a, P3a)
 
 ##FIRMA SPETTRALE CHAD 1973
@@ -356,7 +283,6 @@ ggplot(spectralsw, aes(x=band))+
 geom_line (aes(y=P3a), color="red", size=1)+
 geom_line (aes(y=P3b), color="green",size=1)+
 geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento ai P3a perché in quel punto è tornata l'acqua!
-
 labs(x="band", y="reflactance Lake Chad")
 
 
