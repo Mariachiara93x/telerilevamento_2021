@@ -291,27 +291,27 @@ setwd("C:/lab/CH")
 library(readxl)
 library(ggplot2)
 
-chadmslm <- read_excel("levelchad.xlsx", col_names=TRUE)
-#OUTPUT:
+chadmslm <- read_excel("levelchad.xlsx")                                                                             
+chadmslm
 # A tibble: 13 x 2
-    #YEAR ` LAKE CHAD WATER LEVEL (m.a.s.l)`
-  # <dbl>        <chr>                            
-# 1  1960        282.5                            
-# 2  1965        282.2                            
-# 3  1970        280.7                            
-# 4  1975        279.8                            
-# 5  1980        279.7                            
-# 6  1985        278.7                            
-# 7  1990        278.6                            
-# 8  1995        279.5                            
-# 9  2000        279.8                            
-# 10  2005       279.9                            
-# 11  2010       280.2                            
-# 12  2015       280.0                            
-# 13  2020       280.4 
+#year `Lake Chad water level (a.m.s.l.)`
+   <dbl> <chr>                             
+ 1  1960 282.5                             
+ 2  1965 282.2                             
+ 3  1970 280.7                             
+ 4  1975 279.8                             
+ 5  1980 279.7                             
+ 6  1985 278.7                             
+ 7  1990 278.6                             
+ 8  1995 279.5                             
+ 9  2000 279.8                             
+10  2005 279.9                             
+11  2010 280.2                             
+12  2015 280.0                             
+13  2020 280.4    
 
-
-
+lakelevel<- data.frame(chadmslm)
+ggplot(lakelevel, aes(x=year, y=Lake.Chad.water.level..a.m.s.l..)) +
 
 
 
