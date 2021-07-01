@@ -16,7 +16,7 @@ chad3 <- brick("chad2017.jpg")
 chad3
 plot(chad3)
 
-#plotto con RGB un par delle 4 immagini
+#plotto con RGB un par delle 3 immagini
 #osservo nel tempo una generale riduzione del contenuto d'acqua all'interno del lago e contemporaneamente un aumento della vegetazione 
 #il colore rosso nelle immagini rappresenta la vegetazione, il grigio-azzurro l'acqua
 #b1=NIR, b2=rosso, b3=verde
@@ -27,16 +27,14 @@ plotRGB(chad3, r=1, g=2, b=3, stretch="lin")
 
 
 #NDVI
-# (NIR-RED) / (NIR+RED)
+#(NIR-RED) / (NIR+RED)
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 ndvi1 <- (chad1$chad1973.1 - chad1$chad1973.2) / (chad1$chad1973.1 + chad1$chad1973.2)
 plot(ndvi1, col=cl, main="NDVI in 1973")
-
 ndvi2 <- (chad2$chad1987.1 - chad2$chad1987.2) / (chad2$chad1987.1 + chad2$chad1987.2)
 plot(ndvi2, col=cl, main="NDVI in 1987")
-
 ndvi3 <- ( chad3$chad2017.1 - chad3$chad2017.2) / ( chad3$chad2017.1 + chad3$chad2017.2)
-plot(ndvi2, col=cl,main="NDVI in 2017")
+plot(ndvi3, col=cl,main="NDVI in 2017")
 
 par(mfrow=c(2,2))
 plot(ndvi1, col=cl, main="NDVI in 1973") 
@@ -45,10 +43,6 @@ plot(ndvi3, col=cl, main="NDVI in 2017")
 #per immagine 1973 osservo: valori NDVI da -1 a -0.4 (presenza di acqua nel lago); ai bordi nella zona SE valori vicini a 0.5
 #per immagine 1987 osservo: valori NDVI circa 0.4 (rimanenza lago a SE); intorno al lago a SE valore 1 (fitta vegetazione)
 #per immagine 2017 osservo: valori NDVI vicini a -1 (rimanenza lago a SE); il resto del lago riporta valori tra 0.5 e 1 (aumenta superfice vegetativa)
-
-
-########creo un grafico plottando i valori dei pixel di ndvi1 contro i valori dei pixel di ndvi3
-plot(ndvi1, ndvi3, col="red", pch=8, cex=1) 
 
 
 #DIFFERENZA di RIFLETTANZA TRA LAKE CHAD 2017 (chad3) E LAKE CHAD 1973 (chad1)
