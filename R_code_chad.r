@@ -313,6 +313,27 @@ lakelevel<- data.frame(chadmslm)
 colnames(lakelevel)[2] <- "Lake_Chad_water_level"
 plot(lakelevel$year, lakelevel$Lake_Chad_water_level, xlab="year", ylab="Lake Chad water level (a.m.s.l.)", (type="l"))
 
-read_excel("Sahel prec anomaly.xlsx")
+
+sahelprec <- read_excel("Sahel prec anomaly.xlsx")
+sahelprec
+A tibble: 58 x 2
+ #YEAR `SAHEL RAINFALL ANOMALY (mm)`
+   <dbl>                         <dbl>
+ 1  1960                         13.7 
+ 2  1961                         18.7 
+ 3  1962                         19.9 
+ 4  1963                         15.5 
+ 5  1964                         24.7 
+ 6  1965                         22.6 
+ 7  1966                         17.1 
+ 8  1967                         23.3 
+ 9  1968                         -5.64
+10  1969                         22.0 
+# ... with 48 more rows
+
+anomaly <- data.frame(sahelprec)
+colnames(anomaly)[1] <- "SAHEL_RAINFALL_ANOMALY(mm)"
+plot(anomaly$YEAR, anomaly$SAHEL_RAINFALL_ANOMALY(mm), xlab="year", ylab="Sahel rainfall anomaly(mm)", (type="l"))
+
 
 
