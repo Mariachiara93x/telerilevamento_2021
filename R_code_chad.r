@@ -289,7 +289,6 @@ labs(x="band", y="reflactance Lake Chad")
 install.packages("readxl")
 setwd("C:/lab/CH")
 library(readxl)
-library(ggplot2)
 
 chadmslm <- read_excel("levelchad.xlsx")                                                                             
 chadmslm
@@ -311,7 +310,9 @@ chadmslm
 13  2020 280.4    
 
 lakelevel<- data.frame(chadmslm)
-ggplot(lakelevel, aes(x=year, y=Lake.Chad.water.level..a.m.s.l..)) +
+colnames(lakelevel)[2] <- "Lake_Chad_water_level"
+plot(lakelevel$year, lakelevel$Lake_Chad_water_level, xlab="year", ylab="Lake Chad water level (a.m.s.l.)", (type="l"))
 
+read_excel("Sahel prec anomaly.xlsx")
 
 
