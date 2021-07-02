@@ -327,8 +327,8 @@ ggplot(spectralsw, aes(x=band))+
 geom_line (aes(y=P3a), color="red", size=1)+
 geom_line (aes(y=P3b), color="green",size=1)+
 geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento ai P3a perché in quel punto è tornata l'acqua!
-labs(x="band", y="reflactance") +
-guides(color = TRUE, size = TRUE)
+labs(x="band", y="reflactance") 
+
 
 ######
 install.packages("readxl")
