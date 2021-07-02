@@ -356,7 +356,7 @@ chadmslm
 
 lakelevel<- data.frame(chadmslm)
 colnames(lakelevel)[2] <- "Lake_Chad_water_level"
-plot(lakelevel$year, lakelevel$Lake_Chad_water_level, xlab="year", ylab="a.m.s.l.", col="red", type="o", cex=3, main="Lake Chad water level variations")
+plot(lakelevel$year, lakelevel$Lake_Chad_water_level, xlab="year", ylab="a.m.s.l.", col="red", type="o", cex=3, main="Lake-level fluctuations")
 
 
 sahelprec <- read_excel("Sahel prec anomaly.xlsx")
