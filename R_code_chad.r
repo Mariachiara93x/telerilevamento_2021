@@ -139,7 +139,57 @@ click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
 # 1 201.5 336.5 160282      138        103         83
 #  x     y   cell      chad1987.1 chad1987.2 chad1987.3
 # 1 231.5 219.5 241744      25          4          3
+#  x     y   cell      chad1987.1 chad1987.2 chad1987.3library(raster)
+setwd("C:/lab/CH")
+
+#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali
+library(rgdal) #(posso anche non usarla)
+chad1 <- brick("chad1973.jpg")
+plotRGB(chad1, r=1, g=2, b=3, stretch="hist")
+
+#utilizzo la funzione CLICK per cliccare su una mappa e ottenere informazioni relative a quel punto
+#in questo caso, le info sono relative alla riflettanza
+#T= true
+#id= argomento che stabilisce se voglio creare un identificativo per ogni punto
+#xy= arg che indica che vogliamo utilizzare un'informazione parziale
+#cell= arg che indica che clicco su un pixel
+#type= arg che indica il tipo di click, in questo caso il "punto, p"
+#pch= arg che indica lo stile del punto
+
+click(chad1, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+#OUTPUT:
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 201.5 335.5 160978        1         53         67
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 232.5 218.5 242441        7         45         58
+#  x     y   cell        chad1973.1 chad1973.2 chad1973.3
+# 1 354.5 124.5 307987        6         71         73
+
+#PUNTO 1 N (interessante messo a confronto con il terzo)
+#riflettanza banda 1 = 1 (IR) 
+#riflettanza banda 2 = 53 (red) 
+#riflettanza banda 3 = 67 (green)
+
+#PUNTO 2 Centro-W (interessante messo a confronto con il terzo, ma volendo con entrambi)
+#riflettanza banda 1 = 7 (IR)
+#riflettanza banda 2 = 45 (red) 
+#riflettanza banda 3 = 58 (green)
+
+#PUNTO 3 S (interessante messo a confronto con tutti e tre)
+#riflettanza banda 1 = 6 (IR)
+#riflettanza banda 2 = 71 (red) 
+#riflettanza banda 3 = 73 (green)
+
+
+chad2 <- brick("chad1987.jpg")
+plotRGB(chad2, r=1, g=2, b=3, stretch="hist")
+
+click(chad2, id=T, xy=T, cell=T, type="p", pch=16, col="yellow")
+#OUTPUT:
 #  x     y   cell      chad1987.1 chad1987.2 chad1987.3
+# 1 201.5 336.5 160282      138        103         83
+#  x     y   cell      chad1987.1 chad1987.2 chad1987.3
+# 1 231.5 219.5 241744      25          4          3
 # 1 353.5 123.5 308682      165         31         20
 
 #PUNTO 1 N
@@ -277,7 +327,8 @@ ggplot(spectralsw, aes(x=band))+
 geom_line (aes(y=P3a), color="red", size=1)+
 geom_line (aes(y=P3b), color="green",size=1)+
 geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento ai P3a perché in quel punto è tornata l'acqua!
-labs(x="band", y="reflactance Lake Chad")
+labs(x="band", y="reflactance") +
+guides(color = TRUE, size = TRUE)
 
 ######
 install.packages("readxl")
