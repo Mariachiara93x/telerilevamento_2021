@@ -1,8 +1,24 @@
 #R_code_chad.r
+#"Lake Chad sustains people, animals, fishing, irrigation, and economic activity in west-central Africa. 
+#But in the past half century, the once-great lake has lost most of its water and now spans less than a tenth of the area it covered in the 1960s. 
+#Scientists and resource managers are concerned about the dramatic loss of fresh water that is the lifeblood of more than 30 million people.
+
+#The Chad Basin sits within the Sahel, a semiarid strip of land dividing the Sahara Desert from the humid savannas of equatorial Africa. 
+#The basin is bordered by mountain ranges and spans more than 2.4 million square kilometers of Cameroon, Nigeria, Chad, and Niger. 
+#The water level in the lake is largely controlled by the inflow from rivers, notably the Chari from the south and, seasonally, the Komodugu-Yobe from the northwest. 
+#Rainfall can also reach the lake by way of smaller tributaries and groundwater discharge.(...)
+#Extreme swings in Lake Chad’s water levels are not new. The lake has experienced wet and dry periods for thousands of years, according to paleoclimate research.(...)
+#In 1973, the lake was in a phase called “Normal Lake Chad”—a single body of water with an archipelago on the north side of the southern basin.(...)
+#Throughout the 1970s, severe droughts plagued the African Sahel, and water disappeared from the northern basin. Since then, water has come and gone from the northern lobe depending on the year and season. 
+#But the two lobes have never reconnected into a single lake."
+#from Earth Observatory
 
 library(raster)
 
 setwd("C:/lab/CH")
+#importo le tre immagini del Lago Chad (in falso colore) telerilevate rispettivamente da Landsat 1 (1973), Landsat 5 (1987) e Landsat 8 in 2017
+#le immagini sono state scaricate da Earth Observatory (https://earthobservatory.nasa.gov/features/LakeChad)
+#utilizzo la funzione brick per importare tutte le bande disponibili (tre per ciascuna immagine in questo caso)
 
 chad1 <- brick("chad1973.jpg")
 chad1
@@ -24,6 +40,7 @@ par(mfrow=c(2,2))
 plotRGB(chad1, r=1, g=2, b=3, stretch="lin")
 plotRGB(chad2, r=1, g=2, b=3, stretch="lin")
 plotRGB(chad3, r=1, g=2, b=3, stretch="lin")
+
 
 
 #NDVI
@@ -330,114 +347,79 @@ geom_line (aes(y=P3c), color="blue", size=1)+ #noto che assume simile andamento 
 labs(x="band", y="reflactance") 
 
 
-######
+#Correlation between Lake Chad water level and Sahel rainfall anomalies
 install.packages("readxl")
 setwd("C:/lab/CH")
 library(readxl)
 
+#ho ricavato i dati delle fluttuazione del livello del lago dal seguente sito: http://hydroweb.theia-land.fr/hydroweb/view/L_tchad?lang=en
+#ho riportato in un documento excel gli anni dal 1960 al 2020 (di 5 anni in 5 anni) in una colonna e i valori del livello del lago in un'altra
+#per i valori, ho scelto i mesi da giugno ad ottobre e ne ho fatto la media
+#ho utilizzato la libreria read_excel per importare il file creato
 chadmslm <- read_excel("levelchad.xlsx")                                                                             
 chadmslm
 # A tibble: 13 x 2
 #year `Lake Chad water level (a.m.s.l.)`
-   <dbl> <chr>                             
- 1  1960 282.5                             
- 2  1965 282.2                             
- 3  1970 280.7                             
- 4  1975 279.8                             
- 5  1980 279.7                             
- 6  1985 278.7                             
- 7  1990 278.6                             
- 8  1995 279.5                             
- 9  2000 279.8                             
-10  2005 279.9                             
-11  2010 280.2                             
-12  2015 280.0                             
-13  2020 280.4    
+#   <dbl> <chr>                             
+# 1  1960 282.5                             
+# 2  1965 282.2                             
+# 3  1970 280.7                             
+# 4  1975 279.8                             
+# 5  1980 279.7                             
+# 6  1985 278.7                             
+# 7  1990 278.6                             
+# 8  1995 279.5                             
+# 9  2000 279.8                             
+#10  2005 279.9                             
+#11  2010 280.2                             
+#12  2015 280.0                             
+#13  2020 280.4    
 
 lakelevel<- data.frame(chadmslm)
 colnames(lakelevel)[2] <- "Lake_Chad_water_level"
+#plotto il grafico delle fluttuazioni del livello del lago
 plot(lakelevel$year, lakelevel$Lake_Chad_water_level, xlab="year", ylab="a.m.s.l.", col="red", type="o", cex=3, main="Lake-level fluctuations")
 
 
+
+#"The Sahel rainy season is centered on June through October, and the means are taken for those months."
+#Ho ricavato i dati delle anomalie di precipitazione nel Sahel in questo sito: http://research.jisao.washington.edu/data/sahel/#values
+#ho riportato in un documento excel gli anni dal 1960 al 2017 in una colonna e i valori sulle anomalie in un'altra
+#per i valori, ho scelto i mesi da giugno ad ottobre, ne ho fatto la media e ho moltiplicato il valore ottenuto x 0,1, così da avere la conversione in mm
+#ho utilizzato la libreria read_excel per importare il file creato
 sahelprec <- read_excel("Sahel prec anomaly.xlsx")
 sahelprec
-A tibble: 58 x 2
- #YEAR `SAHEL RAINFALL ANOMALY (mm)`
-   <dbl>                         <dbl>
- 1  1960                         13.7 
- 2  1961                         18.7 
- 3  1962                         19.9 
- 4  1963                         15.5 
- 5  1964                         24.7 
- 6  1965                         22.6 
- 7  1966                         17.1 
- 8  1967                         23.3 
- 9  1968                         -5.64
-10  1969                         22.0 
+#A tibble: 58 x 2
+ #YEAR       `SAHEL RAINFALL ANOMALY (mm)`
+#  <dbl>                         <dbl>
+# 1  1960                         13.7 
+# 2  1961                         18.7 
+# 3  1962                         19.9 
+# 4  1963                         15.5 
+# 5  1964                         24.7 
+# 6  1965                         22.6 
+# 7  1966                         17.1 
+# 8  1967                         23.3 
+# 9  1968                         -5.64
+# 10  1969                         22.0 
 # ... with 48 more rows
 
 anomaly <- data.frame(sahelprec)
 anomaly
 #  YEAR     SAHEL.RAINFALL.ANOMALY..mm.
-1  1960                       13.66
-2  1961                       18.74
-3  1962                       19.88
-4  1963                       15.52
-5  1964                       24.74
-6  1965                       22.58
-7  1966                       17.10
-8  1967                       23.32
-9  1968                       -5.64
-10 1969                       21.98
-11 1970                        0.16
-12 1971                       -1.42
-13 1972                      -17.68
-14 1973                      -13.64
-15 1974                       10.50
-16 1975                       12.56
-17 1976                        5.30
-18 1977                       -8.40
-19 1978                        8.36
-20 1979                       -0.60
-21 1980                       -2.46
-22 1981                       -2.84
-23 1982                       -9.76
-24 1983                      -21.28
-25 1984                      -22.96
-26 1985                       -4.90
-27 1986                       -4.04
-28 1987                       -9.20
-29 1988                       11.10
-30 1989                        6.86
-31 1990                      -13.20
-32 1991                       -1.04
-33 1992                       -2.74
-34 1993                       -1.66
-35 1994                       24.88
-36 1995                       -0.36
-37 1996                       -1.44
-38 1997                       -6.18
-39 1998                        8.72
-40 1999                       26.26
-41 2000                        2.18
-42 2001                        0.16
-43 2002                       -9.74
-44 2003                       18.98
-45 2004                       -7.10
-46 2005                        3.28
-47 2006                        1.48
-48 2007                       -4.68
-49 2008                       12.94
-50 2009                        8.84
-51 2010                       20.32
-52 2011                       -5.36
-53 2012                       22.34
-54 2013                        5.44
-55 2014                        4.62
-56 2015                       27.36
-57 2016                       18.54
-58 2017                        7.50
+#1  1960                       13.66
+#2  1961                       18.74
+#3  1962                       19.88
+#4  1963                       15.52
+#5  1964                       24.74
+#6  1965                       22.58
+#7  1966                       17.10
+#8  1967                       23.32
+#9  1968                       -5.64
+#10 1969                       21.98
+#......seguono gli altri 48 valori per ciascuna colonna
 
+#plotto il grafico delle anomalie di precipitazione
 plot(anomaly$YEAR, anomaly$SAHEL.RAINFALL.ANOMALY..mm., xlab="year", ylab="mm", col="blue", type="o", cex=3, main="Sahel rainfall anomaly")
 
 
