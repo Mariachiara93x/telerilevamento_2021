@@ -33,9 +33,9 @@ setwd("C:/lab/") # questa modalità di selezione è valida per Windows
 #La funzione brick serve a importare un'immagine satellitare in tutte le sue bande disponibili
 #in questo caso importerò 7 bande
 #associo la funzione brick all'oggetto "p224r63_2011"
-#scelgo l'immagine della riserva del Parakana 
+#scelgo l'immagine della riserva del Parakana in Brasile
 p224r63_2011 <- brick ("p224r63_2011_masked.grd.")  
-p224r63_2011 #ottengo info sull'immagine
+p224r63_2011 #ottengo le info seguenti sull'immagine
 #class      : RasterBrick 
 #dimensions : 1499, 2967, 4447533, 7  (nrow, ncol, ncell, nlayers)
 #resolution : 30, 30  (x, y)
@@ -54,14 +54,13 @@ cl <- colorRampPalette(c("black","grey","light grey")) (100)
 
 plot(p224r63_2011, col=cl)
 
-
 # colour change -> new: scelgo dei colori a piacimento variando anche i livelli (da 100 a 200) 
 cl <- colorRampPalette(c("pink", "light blue", "dark green", "purple", "orange", "dark red")) (200)
 plot(p224r63_2011, col=cl)
 
-#LANDSAT -> è un gruppo di satelliti per telerilevamento che osservano la Terra
+#LANDSAT -> si tratta di diversi satelliti per telerilevamento che osservano la Terra
 #ha una risoluzione spaziale di 30m e ricopre la Terra in 4 giorni
-#Landsat orbits (path and row system) -> sinusoidi e righe che si intersecano e creano l'immagine
+#Landsat orbits (path and row system) -> determina sinusoidi e righe che si intersecano e creano l'immagine
 
 # Bande Landsat
 # B1: blu
@@ -151,9 +150,10 @@ dev.off()
 
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
 #con il valore hist determino una curva e non più una linea (come in lin): in pratica "stiro" ulteriormente i colori e ottengo un'immagine con più dettaglio 
+#hist è molto valida per osservare i frattali, ad esempio ramificazioni dei bacini idrografici
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="hist") 
 
-#par natural colours, false colours and false colours with histogram stretching
+#par natural colours, false colours, and false colours with histogram stretching
 par(mfrow=c(3,1))
 plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="lin")
 plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="lin")
@@ -386,9 +386,9 @@ plot(p224r63_2011$B1_sre, p224r63_2011$B2_sre, col="red", pch=18, cex=2)
 #ossia, l'informazione di un punto è molto simile all'informazione di un altro punto in un'altra banda
 
 #uso PAIRS per plottare tutte le correlazioni possibili tra tutte le variabili di un dataset
-#vedo a coppie come le variabili (ossia le bande) sono correlate fra loro
+#vedo (a coppie) come le variabili (ossia le bande) sono correlate fra loro
 #applico pairs all'immagine
-#è presente indice di correlazion che varia tra -1 e 1
+#è presente indice di correlazione che varia tra -1 e 1
 #se c'è correlazione positiva va a 1, al contrario a -1
 pairs(p224r63_2011)
 
@@ -413,7 +413,8 @@ par(mfrow=c(2,1))
 plotRGB(p224r63_2011,r=4,g=3,b=2, stretch="lin")
 plotRGB(p224r63_2011res,r=4,g=3,b=2, stretch="lin")
 
-#faccio la PCA del dataset p224r63_2011res
+#PCA
+#faccio una PCA del dataset p224r63_2011res
 #PCA sta per Principal Component Analysis
 #esegue un'analisi dei componenti principali del dataset che può contenere valori mancanti o molto correlati tra loro
 #per ovviare al "problema", tramite la pca analizzo solo alcuni componenti     
@@ -421,7 +422,7 @@ plotRGB(p224r63_2011res,r=4,g=3,b=2, stretch="lin")
 #prende il pacchetto di dati e lo compatta in un numero minore di bande
 p224r63_2011res_pca<-rasterPCA(p224r63_2011res)
 #applico la funzione summary per ottenere un sommario del modello
-#solo con la prima componente viene spiegato il 99,98% della variabilità
+#solo con la prima componente viene spiegato il 99,98% della variabilità (ottengo praticamente tutte le info solo con questa componenente!)
 #con le prime tre bande viene spiegato il 99,99% della variabilità
 summary(p224r63_2011res_pca$model)
 #plottando la mappa osservo infatti che nella PC1 ho tante informazioni
@@ -460,7 +461,7 @@ plotRGB(so, 1, 2, 3, stretch="lin")
 #CLASSIFICAZIONE NON SUPERVISIONATA
 #per la classificazione utilizzo il metodo del maximun likelihood
 #il maximum likelihood si ottiene tramite un grafico multispettrale
-#cioè gruppi di pixel che, per distanza nel grafico e somiglianza tra loro, vengono associati a label (es: NEVE, URBANO, ecc)
+#cioè gruppi di pixel che, per distanza nel grafico (dunque somiglianza tra loro), vengono associati a label (es: NEVE, URBANO, ecc)
 #per ottenere questo grafico, il software compie una classificazione non supervisionata
 #cioè raggruppa automaticamente i pixel rilevando la loro riflettanza, senza che sia l'utente a definire le classi a monte
 #uso il pacchetto RStoolbox per compiere la class. non superv.
