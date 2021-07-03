@@ -964,7 +964,7 @@ defor2 <- brick("defor2.jpg")
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 plotRGB(defor2, r=1, g=2, b=3, stretch="hist") # differenze dei colori più accentuate con hist, perché uso curva logistica anziché linea
 
-#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali #####SPIEGA
+#gdal è la libreria generale per dati geospaziali sia raster sia vettoriali 
 library(rgdal)
 
 # utilizzo la funzione click per cliccare su una mappa e ottenere informazioni relative a quel punto
