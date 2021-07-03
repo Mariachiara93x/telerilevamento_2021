@@ -495,10 +495,10 @@ plot(sunc$map)
 #GRAND CANYON
 #https://landsat.visibleearth.nasa.gov/view.php?id=80948
 #in questa immagine rilevata dal satellite Landsat in data 30 Marzo 2013, si osserva una porzione del Grand Canyon
-#"In the image above, the Colorado River traces a line across the arid Colorado Plateau. 
-#Treeless areas are beige and orange; green areas are forested. 
-#The river water is brown and muddy, a common occurrence in spring when melting snows cause water levels to swell and pick up extra sediment. 
-#The black line that follows the river in the upper right side of the image is comprised of shadows." by NASA Landsat Image Gallery
+#"In the image above, the Colorado River traces a line across the arid Colorado Plateau." 
+#"Treeless areas are beige and orange; green areas are forested." 
+#"The river water is brown and muddy, a common occurrence in spring when melting snows cause water levels to swell and pick up extra sediment." 
+#"The black line that follows the river in the upper right side of the image is comprised of shadows." by NASA Landsat Image Gallery
 
 library(raster)
 library(RStoolbox)#necessario per analisi multivariata
@@ -507,7 +507,7 @@ setwd("C:/lab/")
 #scarico l'immagine e la salvo nella cartella lab
 #associo l'immagine all'oggetto gc e utilizzo la funzione brick
 gc <- brick("dolansprings_oli_2013088_canyon_lrg.jpg")
-#utilizzo la funzione RGB per plottare un oggetto Raster multi strato
+#utilizzo la funzione RGB per plottare l'oggetto raster multi strato
 #uso lo stretch, lineare e poi hist, per aumentare rispettivamente la potenza visiva di tutti i colori
 plotRGB(gc, r=1, g=2, b=3, stretch="lin")
 plotRGB(gc, r=1, g=2, b=3, stretch="hist")
@@ -545,7 +545,7 @@ grid.arrange(p1, p2, nrow = 2) # this needs gridExtra
 
 #..............................................
 
-#8. Vegetation Indices ############SPIEGA BENISSSSIIIMOOOOO!!!
+#8. Vegetation Indices 
 
 #R_code_vegetation_indices.r
 
@@ -559,7 +559,7 @@ defor2 <- brick("defor2.jpg")
 #osservo la variazione di vegetazione nel tempo
 #b1=NIR, b2=rosso, b3=verde
 par(mfrow=c(2,1))
-plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
+plotRGB(defor1, r=1, g=2, b=3, stretch="lin") #è molto più vegetata rispetto a defor2 (area in rosso, cioè la vegetazione, più elevata)
 plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
 
 #visualizzo informazioni su immagine defor1
@@ -567,9 +567,12 @@ defor1
 
 #DIffERENCE VEGETATION INDEX
 #osservo in che stato di salute è la vegetazione
-#noto che la vegetazione (foresta amazzonica) è molto verde
+#una pianta (sana) riflette molto nel NIR e allo stesso tempo assorbe il rosso
+#il DVI = indice di differenza di vegetazione, che si calcola facendo: riflettanza nel NIR - riflettanza nel rosso 
+#il range del DVI è da -255 a + 255 solo nel caso di immagini a 8 bit: varia se le immagini sono a 16 bit
 dvi1 <- defor1$defor1.1 - defor1$defor1.2
 plot(dvi1)
+#noto che la vegetazione (foresta amazzonica) è molto verde
 
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
 plot(dvi1, col=cl, main="DVI at time 1")
@@ -592,14 +595,18 @@ cld <- colorRampPalette(c('blue','white','red'))(100)
 plot(difdvi, col=cld)
 
 #NDVI = (NIR-RED) / (NIR+RED)
+#NDV = normalizzazione del DVI: in questo modo possiamo paragonare immagini che hanno risoluzione radiometrica diversa in entrata (in pratica qualsiasi tipo di immagine)
+#il range di NDVI è sempre lo stesso: da -1 a +1
 ndvi1 <- (defor1$defor1.1 - defor1$defor1.2) / (defor1$defor1.1 + defor1$defor1.2)
 plot(ndvi1, col=cl)
 
 ndvi2 <- (defor2$defor2.1 - defor2$defor2.2) / (defor2$defor2.1 + defor2$defor2.2)
 plot(ndvi2, col=cl)
  
-#RStoolbox: spectralIndices #########SPIEGAAAAAAAAAAAAAAAAAAAA!!
+#RStoolbox: spectralIndices 
 library(RStoolbox)# for vegetation indices calculation
+#la funzione spectralIndices permette di visualizzare diversi tipi di indici multispettrali (NDVI, SAVI, CLG, ecc..)
+#applico la funzione spectralIndices all'immagine defor1 scegliendo il numero delle bande
 vi1<- spectralIndices (defor1, green=3, red=2, nir=1)
 plot (vi1, col=cl)
 
@@ -625,7 +632,7 @@ plot(copNDVI)
 #il ":" serve a dare il range di valori dei pixel
 copNDVI<-reclassify(copNDVI, cbind (253:255,NA))
 plot(copNDVI)
-#noto in nord america e nord europa un NDVI più alto
+#noto in Nord America e Nord Europa un NDVI più alto
 
 #richiamo la libreria rasterVis per fare un levelplot dell'immagine precedentemente plottata
 library(rasterVis)
@@ -635,27 +642,26 @@ levelplot(copNDVI)
 
 #..............................................
 
-#9. R code land cover ########SPIEGAAAAAAAAAAAAAAA!!
+#9. R code land cover 
 
 #R_code_land_cover.r
 library(raster)
 library(RStoolbox) #classification
 
 #installo il pacchetto ggplot2
-install.packages("ggplot2")
+install.packages("ggplot2") #è un pacchetto che permette di creare grafici e di visualizzare dati (ha molta varietà)
 library(ggplot2)
-
 setwd("C:/lab/") 
 
 defor1 <- brick("defor1.jpg")
 
-#NIR 1, RED 2, GREEN 3
+#NIR=1, RED=2, GREEN=3
 plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
 
-#utilizzo la funzione ggR per plottare immagini ottenendo le coordinate spaziali dell'oggetto
-#anzichè usare la funzione plot, uso "gg"
+#utilizzo la funzione ggRGB per plottare immagini ottenendo le coordinate spaziali dell'oggetto
+#(anzichè usare la funzione plot, uso "gg")
 #uso ggRGB e creo un'immagine singola delle tre bande
-#è necessario caricare la libreria RStoolbox
+#(è necessario caricare la libreria RStoolbox)
 defor1 <- brick("defor1.jpg")
 plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
 ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
@@ -675,7 +681,7 @@ library(gridExtra)
 
 #utilizzo la funzione grid.arrange per creare multiframe in un grafico
 p1 <- ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
-p2 <-ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
+p2 <- ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
 grid.arrange(p1,p2,nrow=2)
 
 #7 MAGGIO
@@ -686,32 +692,48 @@ library(ggplot2)
 library(gridExtra)
 setwd("C:/lab/") 
 
-#classificazione non supervisionata
+defor1 <- brick("defor1.jpg")
+ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
+#faccio la classificazione non supervisionata scegliendo 2 classi di riferimento
 d1c<-unsuperClass(defor1, nClasses=2) #set.seed() per ottenere lo stesso risultato
 plot(d1c$map)
+
+#classe 1= foresta tropicale
+#classe2 = parte agricola
 
 defor2 <- brick("defor2.jpg")
 ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
 d2c <-unsuperClass(defor2, nClasses=2) 
 plot(d2c$map)
 
+#classe 1= parte agricola
+#classe2 = foresta
+
+#ora faccio la classificazione non supervisionata scegliendo 3 classi di riferimento
 d2c3 <- unsuperClass(defor2, nClasses=3)
 plot(d2c3$map)
+#classe 1 e 3: vengono distinte due parti all'interno della parte agricola (verde e bianco)
+#classe 2: ciò che rimane della foresta amazzonica
 
-#frequecies  ########SPIEGAAAAAAAAAAA
+#FREQUENCIES
+#la funzione freq mi permette di osservare quante volte ho i pixel della classe "foresta" e della classe "parte agricola"
 freq(d1c$map)
+#OUTPUT:
 #     value  count
-[1,]     1  34181
-[2,]     2 307111
+#[1,]     1  34181
+#[2,]     2 307111
 
+#faccio la somma dei due valori (per d1c) per poi fare la proporzione di ciascun valore
 s1<-307111 + 34181
 s1
 
+#faccio la proporzione (valore/tot)
 prop1 <- freq(d1c$map)/s1
 prop1
 #prop forest:0.8983012
 #prop agriculture: 0.1016988
 
+#faccio la somma dei due valori (per d2c) per poi fare la proporzione di ciascun valore
 s2<-342726
 s2
 prop2 <- freq(d2c$map) / s2
@@ -719,24 +741,24 @@ prop2
 
 #creo un dataframe
 cover <- c("Forest", "Agriculture")
-percent_1992 <- c(89.83, 10.16)
-percent_2006 <- c(52.06, 47.93)
+percent_1992 <- c(89.83, 10.16) #ho trasformato le proporzioni relative a d1c in %
+percent_2006 <- c(52.06, 47.93) #ho trasformato le proporzioni relative a d2c in %
 percentages <- data.frame(cover, percent_1992, percent_2006)
 percentages
 
 #plotto il dataframe con ggplot
-p1<-ggplot(percentages, aes(x=cover, y=percent_1992, color=cover)) + geom_bar(stat="identity", fill="light green")
+p1<-ggplot(percentages, aes(x=cover, y=percent_1992, color=cover)) + geom_bar(stat="identity", fill="light green") #scelgo geom_bar per avere grafico a barre
 p2<-ggplot(percentages, aes(x=cover, y=percent_2006, color=cover)) + geom_bar(stat="identity", fill="pink")
 
 grid.arrange(p1,p2, nrow=1)
 
 #..............................................
 
-#10. R code variability #########SPIEGAAAAAAAAAAAAAAAAAAAA
+#10. R code variability 
 
 #R_code_variability.r
 #Faccio un'analisi di pattern spaziali tramite l'uso di indici del paesaggio: ghiacciao del Similaun
-#osservo la variabilità spaziale
+#osservo la variabilità spaziale (eterogeneità in un ambiente)
 library(raster)
 library(RStoolbox)
 library(ggplot2)
@@ -746,7 +768,7 @@ library(viridis) # per colorare i plot di ggplot in modo automatico
 
 setwd("C:/lab/")
 
-sent <- brick("sentinel.png")
+sent <- brick("sentinel.png") #l'immagine è a falsi colori
 #NIR 1, RED 2, GREEN 3
 #r=1, g=2, b=3
 
@@ -758,8 +780,8 @@ nir <- sent$sentinel.1
 red <- sent$sentinel.2
 
 ndvi <- (nir-red)/ (nir+red)
-plot(ndvi) #dove è bianco non c'è vegetazione, 
-#dove è rosato roccia nuda, 
+plot(ndvi) #dove è bianco non c'è vegetazione 
+#dove è rosato roccia nuda 
 #dove è giallo e verde è bosco, verde scuro le praterie
 
 cl <- colorRampPalette(c('black','white','red','magenta','green'))(100)
@@ -771,13 +793,19 @@ plot(ndvisd3)
 clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) #
 plot(ndvisd3, col=clsd) #roccia in blu (molto omogenea)
 
-#media ndvi with focal
+#utilizzo la tecnica della moving window
+#creo una finestra mobile e faccio una media dei valori compresi al suo interno
+#maggiore è l'eterogeneità di qualcosa (ad es. roccia) maggiore sarà la sua deviazione standard (variabilità)
+#faccio la media di ndvi ottenuto prima con la funzione focal
+#all'interno di focal sceglo l'argomento w(moving window) -> la imposto scegliendo i pixel che deve comprendere
+#all'interno di focal imposto il numero di righe (nrow) e colonne (ncol)
+#all'interno di focal fun=mean serve per fare la media della moving window
 ndvimean3 <- focal(ndvi, w=matrix(1/9, nrow=3, ncol=3), fun=mean)
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100)  
 plot(ndvimean3, col=clsd)
 #valori alti nel giallo e più bassi nella parte di roccia nuda
 
-#changing window size
+#changing window size 
 ndvi13 <- focal(ndvi, w=matrix(1/169, nrow=13, ncol=13), fun=mean)
 clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) 
 plot(ndvimean13, col=clsd)
@@ -788,27 +816,36 @@ clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red
 plot(ndvisd5, col=clsd)
 
 #PCA
+#faccio la pca dell'immagine sentinel (sent)
 sentpca <- rasterPCA(sent)
 plot(sentpca$map)
 #man mano che si passa da PC1 a PC4 si perdono le info
 sentpca
 
 summary(sentpca$model)
-#the first PC contains 67.36804% of the original information
+#la prima PC contiene 67.36804% dell'imformazione originale
 
 pc1 <- sentpca$map$PC1
 
+#faccio deviazione standard scegliendo una moving window per pc1
 pc1sd5 <- focal(pc1, w=matrix,(1/25, nrow=5, ncol=5), fun=sd)
-clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100)  
 plot(pc1sd5, col=clsd)
 
+#con la funzione source posso caricare il codice dall'esterno
+#in questo caso prendo il codice che da virtuale ho scaricato nella cartella lab
 source("source_test_lezione.r")
 
+#faccio lo stesso con il codice seguente
 source("source_ggplot.r")
 
+#lo script che segue è all'interno del file "source_ggplot.r" presente in lab
+#il pacchetto viridis contiene otto scale di colori:
+#“viridis”, il primo, e 5 alternative con proprietà simili - “magma”, “plasma”, “inferno”, “civids”, “mako”, and “rocket”  
+#e una mappa di raimbow color - “turbo”.
 ggplot() +
-p1<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) +
-scale_fill_viridis()
+p1<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) + 
+scale_fill_viridis() #
 ggtitle("Standard deviation of PC1 by viridis colour scale")
 
 ggplot() +
@@ -821,7 +858,7 @@ p3<-geom_raster(pc1sd5, mapping = aes(x= x, y= y, fill=layer)) +
 scale_fill_viridis(option= "turbo") +
 ggtitle("Standard deviation of PC1 by turbo colour scale")
 
-grid.arrange(p1,p2,p3, nrow=2)
+grid.arrange(p1,p2,p3, nrow=2) #devo richiamare la libreria grid.Extra
 
 #..............................................
 
