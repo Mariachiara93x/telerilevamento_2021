@@ -367,7 +367,7 @@ anomaly
 plot(anomaly$YEAR, anomaly$SAHEL.RAINFALL.ANOMALY..mm., xlab="year", ylab="mm", col="blue", type="o", cex=3, main="Sahel rainfall anomaly")
 
 #RESULTS
-#si osservauna effettiva correlazione tra i due grafici: da metà anni '60=>inizia a diminuire il livello del lago e allo stesso tempo un netto calo delle precipitazioni (circa -8mm)
-#da metà degli anni '80 forte diminuzione delle piogge e conseguentemente una netta riduzione del livello del lago
+#si osserva una effettiva correlazione tra i due grafici: da metà anni '60=>inizia a diminuire il livello del lago e allo stesso tempo si verifica un netto calo delle precipitazioni
+#da metà degli anni '80 forte diminuzione delle piogge e conseguentemente una netta riduzione del livello del lago (fino a 278.6 m.s.l.m.)
 #in seguito agli anni 2000, il livello del lago ha ricominciato a salire, ma non è più ritornato ai valori originari
 
